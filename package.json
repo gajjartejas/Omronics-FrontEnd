@@ -1,24 +1,40 @@
 {
 	"name": "omronics-frontend",
 	"version": "0.1.0",
-	"private": true,
 	"homepage": "https://gajjartejas.github.io/Omronics-FrontEnd",
+	"private": true,
 	"dependencies": {
+		"@emotion/react": "^11.10.5",
+		"@emotion/styled": "^11.10.5",
+		"@fontsource/roboto": "^4.5.8",
+		"@mui/icons-material": "^5.10.14",
+		"@mui/material": "^5.10.14",
+		"@redux-devtools/extension": "^3.2.3",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
+		"@types/jest": "^27.5.2",
+		"@types/node": "^16.18.3",
+		"@types/react": "^18.0.25",
+		"@types/react-dom": "^18.0.9",
+		"firebase": "^9.14.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-redux": "^8.0.5",
+		"react-router": "^6.4.3",
+		"react-router-dom": "^6.4.3",
 		"react-scripts": "5.0.1",
+		"redux-thunk": "^2.4.2",
+		"typescript": "^4.9.3",
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d build",
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject",
-		"predeploy": "npm run build",
-		"deploy": "gh-pages -d build"
+		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -39,6 +55,9 @@
 		]
 	},
 	"devDependencies": {
-		"gh-pages": "^4.0.0"
+		"@types/react-router": "^5.1.19",
+		"@types/react-router-dom": "^5.3.3",
+		"gh-pages": "^4.0.0",
+		"redux-immutable-state-invariant": "^2.1.0"
 	}
 }
