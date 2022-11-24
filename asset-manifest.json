@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "https://gajjartejas.github.io/Omronics-FrontEnd/static/css/main.7e350077.css",
-    "main.js": "https://gajjartejas.github.io/Omronics-FrontEnd/static/js/main.95e78d2f.js",
+    "main.js": "https://gajjartejas.github.io/Omronics-FrontEnd/static/js/main.9fdc00d9.js",
     "static/js/787.c117c86e.chunk.js": "https://gajjartejas.github.io/Omronics-FrontEnd/static/js/787.c117c86e.chunk.js",
     "static/media/roboto-all-500-normal.woff": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/roboto-all-500-normal.0ab669b7a0d19b178f57.woff",
     "static/media/roboto-all-700-normal.woff": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/roboto-all-700-normal.a457fde362a540fcadff.woff",
@@ -19,6 +19,7 @@
     "static/media/roboto-latin-ext-700-normal.woff2": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/roboto-latin-ext-700-normal.ed67ad54b1a8f5d21150.woff2",
     "static/media/roboto-latin-ext-500-normal.woff2": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/roboto-latin-ext-500-normal.9165081d10e1ba601384.woff2",
     "static/media/roboto-latin-ext-300-normal.woff2": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/roboto-latin-ext-300-normal.dc7dcec8e3f654e0ed63.woff2",
+    "static/media/navbar-logo.svg": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/navbar-logo.2cc681c627eea3bb6fb54fc787e4ea04.svg",
     "static/media/roboto-cyrillic-500-normal.woff2": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/roboto-cyrillic-500-normal.cad7d3d9cb265e334e58.woff2",
     "static/media/roboto-cyrillic-700-normal.woff2": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/roboto-cyrillic-700-normal.d010f1f324e111a22e53.woff2",
     "static/media/roboto-cyrillic-400-normal.woff2": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/roboto-cyrillic-400-normal.71a33b6b50457b2c903a.woff2",
@@ -37,11 +38,11 @@
     "static/media/roboto-greek-ext-700-normal.woff2": "https://gajjartejas.github.io/Omronics-FrontEnd/static/media/roboto-greek-ext-700-normal.bd9854c751441ccc1a70.woff2",
     "index.html": "https://gajjartejas.github.io/Omronics-FrontEnd/index.html",
     "main.7e350077.css.map": "https://gajjartejas.github.io/Omronics-FrontEnd/static/css/main.7e350077.css.map",
-    "main.95e78d2f.js.map": "https://gajjartejas.github.io/Omronics-FrontEnd/static/js/main.95e78d2f.js.map",
+    "main.9fdc00d9.js.map": "https://gajjartejas.github.io/Omronics-FrontEnd/static/js/main.9fdc00d9.js.map",
     "787.c117c86e.chunk.js.map": "https://gajjartejas.github.io/Omronics-FrontEnd/static/js/787.c117c86e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7e350077.css",
-    "static/js/main.95e78d2f.js"
+    "static/js/main.9fdc00d9.js"
   ]
 }
