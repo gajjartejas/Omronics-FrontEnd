@@ -8,6 +8,7 @@ import ContactUs from "./pages/ContactUs";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppNavbar from "./components/AppNavbar";
+import Config from "./config";
 
 //TODO - move this to seperate theme file
 const theme = createTheme({
@@ -38,7 +39,7 @@ const App: FC = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="App">
-				<AppNavbar message={""} />
+				<AppNavbar items={Config.Constants.HOME_MENU_OPTIONS} />
 				<BrowserRouter>
 					<Routes>
 						<Route path="/" element={<HomePage />} />
