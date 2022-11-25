@@ -1,10 +1,11 @@
 import * as React from "react";
-import { AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography, Button, Stack } from "@mui/material";
+
+//Third Party
 import MenuIcon from "@mui/icons-material/Menu";
-import AppNavbarPopover from "../AppNavbarPopover";
-import HoverPopover from "material-ui-popup-state/HoverPopover";
-import { usePopupState, bindHover, bindPopover } from "material-ui-popup-state/hooks";
+import { AppBar, Box, Button, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Typography } from "@mui/material";
+import { bindHover, usePopupState } from "material-ui-popup-state/hooks";
 import Image from "mui-image";
+import AppNavbarPopover from "../AppNavbarPopover";
 
 interface Props {
 	items: string[];
@@ -57,7 +58,7 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
 					<IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: "none" } }}>
 						<MenuIcon />
 					</IconButton>
-					<Box component="div" sx={{ml:10, color: "#000", flexGrow: 1, display: { xs: "none", sm: "block" } }}>
+					<Box component="div" sx={{ ml: 10, color: "#000", flexGrow: 1, display: { xs: "none", sm: "block" } }}>
 						<Image src={require("../../assets/svg/navbar-logo.svg").default} width={120} />
 					</Box>
 
@@ -68,20 +69,7 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
 							</Button>
 						))}
 					</Stack>
-					{/* <AppNavbarPopover anchorEl={anchorEl} /> */}
-					<HoverPopover
-						{...bindPopover(popupState)}
-						anchorOrigin={{
-							vertical: "bottom",
-							horizontal: "center",
-						}}
-						transformOrigin={{
-							vertical: "top",
-							horizontal: "center",
-						}}
-					>
-						<Typography style={{ margin: 10 }}>The content of the Popover.</Typography>
-					</HoverPopover>
+					<AppNavbarPopover popupState={popupState} />
 				</Toolbar>
 			</AppBar>
 			<Box component="nav">

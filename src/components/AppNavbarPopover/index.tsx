@@ -1,36 +1,20 @@
-import { Divider, List, ListItem, ListItemText, Popover, Typography } from "@mui/material";
-import * as React from "react";
-import { useEffect } from "react";
+import React from "react";
+
+//Third Party
+import { Divider, List, ListItem, ListItemText } from "@mui/material";
+import { bindPopover, PopupState } from "material-ui-popup-state/hooks";
+import HoverPopover from "material-ui-popup-state/HoverPopover";
 
 interface Props {
-	anchorEl: HTMLElement | null;
+	popupState: PopupState;
 }
 
 const AppNavbarPopover: React.FC<Props> = (props: Props) => {
-	const { anchorEl } = props;
-
-	const [open, setOpen] = React.useState(Boolean(anchorEl));
-
-	const handlePopoverClose = () => {
-		setOpen(false);
-		alert("teat");
-	};
-
-	useEffect(() => {
-		setOpen(Boolean(anchorEl));
-	}, [anchorEl]);
+	const { popupState } = props;
 
 	return (
-		<Popover
-			style={{ pointerEvents: "none" }}
-			onMouseLeave={handlePopoverClose}
-			id="mouse-over-popover"
-			sx={{
-				pointerEvents: "none",
-				boxShadow: 1,
-			}}
-			open={open}
-			anchorEl={anchorEl}
+		<HoverPopover
+			{...bindPopover(popupState)}
 			anchorOrigin={{
 				vertical: "bottom",
 				horizontal: "center",
@@ -39,8 +23,6 @@ const AppNavbarPopover: React.FC<Props> = (props: Props) => {
 				vertical: "top",
 				horizontal: "center",
 			}}
-			// onClose={handlePopoverClose}
-			disableRestoreFocus
 		>
 			<List component="nav">
 				<ListItem button>
@@ -57,8 +39,8 @@ const AppNavbarPopover: React.FC<Props> = (props: Props) => {
 				<ListItem button>
 					<ListItemText primary="Spam" />
 				</ListItem>
-			</List>
-		</Popover>
+			</List>{" "}
+		</HoverPopover>
 	);
 };
 
