@@ -17,17 +17,8 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
 	const { window, items } = props;
 	const container = window !== undefined ? () => window().document.body : undefined;
 	const [mobileOpen, setMobileOpen] = React.useState(false);
-	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
-	};
-	const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handlePopoverClose = () => {
-		setAnchorEl(null);
 	};
 
 	const drawer = (
@@ -64,7 +55,7 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
 
 					<Stack direction="row" spacing={3} sx={{ mr: 10, display: { xs: "none", sm: "block" } }}>
 						{items.map((item) => (
-							<Button color="secondary" onMouseEnter={handlePopoverOpen} {...bindHover(popupState)} key={item}>
+							<Button color="secondary" {...bindHover(popupState)} key={item}>
 								{item}
 							</Button>
 						))}
