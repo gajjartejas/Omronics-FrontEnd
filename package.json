@@ -32,7 +32,7 @@
 	},
 	"scripts": {
 		"predeploy": "npm run build-dev",
-		"deploy": "gh-pages -d build",
+		"deploy": "npx env-cmd -f .env.dev gh-pages -d build",
 		"start": "react-scripts start",
 		"build-dev": "npx env-cmd -f .env.dev react-scripts build",
 		"build-sit": "npx env-cmd -f .env.sit react-scripts build",
