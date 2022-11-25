@@ -15,7 +15,9 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '16.18.1'
+        
     - name: Install node modules
       run: npm install
+
     - name: Deploying the static website to gh-pages
       run: npm run deploy-gh-dev
