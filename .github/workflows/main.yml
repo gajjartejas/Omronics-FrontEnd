@@ -19,5 +19,10 @@ jobs:
     - name: Install node modules
       run: npm install
 
+    - name: Commit report
+      run: |
+          git config --global user.name 'gajjartejas'
+          git config --global user.email 'gajjartejas26@gmail.com'
+
     - name: Deploying the static website to gh-pages
       run: npm run deploy-gh-dev
