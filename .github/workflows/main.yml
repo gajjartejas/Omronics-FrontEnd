@@ -25,7 +25,7 @@ jobs:
           git config --global user.email 'gajjartejas26@gmail.com'
 
     - name: Env change
-      run: npm run env-cmd -f .env.dev
+      run: npx env-cmd -f .env.dev
 
     - name: Deploy with gh-pages
       run: |
