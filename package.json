@@ -35,9 +35,9 @@
 		"deploy-dev": "gh-pages -d build",
 		"deploy-gh-dev": "npm run predeploy-dev && npm run deploy-dev",
 		"start": "react-scripts start",
-		"build-dev": "env-cmd -f .env.dev react-scripts build",
-		"build-sit": "env-cmd -f .env.sit react-scripts build",
-		"build": "env-cmd -f .env.production react-scripts build",
+		"build-dev": "npx env-cmd -f .env.dev react-scripts build",
+		"build-sit": "npx env-cmd -f .env.sit react-scripts build",
+		"build": "npx env-cmd -f .env.production react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
