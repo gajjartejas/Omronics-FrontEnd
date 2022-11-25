@@ -39,7 +39,10 @@ const AppNavbarPopover: React.FC<Props> = (props: Props) => {
 				<ListItem button>
 					<ListItemText primary="Spam" />
 				</ListItem>
-			</List>{" "}
+				<ListItem button>
+					<ListItemText primary="Ch1" />
+				</ListItem>
+			</List>
 		</HoverPopover>
 	);
 };
