@@ -63,6 +63,7 @@
 		"@types/mui-image": "^1.0.1",
 		"@types/react-router": "^5.1.19",
 		"@types/react-router-dom": "^5.3.3",
+		"env-cmd": "^10.1.0",
 		"gh-pages": "^4.0.0",
 		"redux-immutable-state-invariant": "^2.1.0"
 	}
