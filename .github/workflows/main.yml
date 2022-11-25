@@ -24,5 +24,12 @@ jobs:
           git config --global user.name 'gajjartejas'
           git config --global user.email 'gajjartejas26@gmail.com'
 
-    - name: Deploying the static website to gh-pages
-      run: npm run deploy-gh-dev
+    - name: Env change
+      run: npm run env-cmd -f .env.dev
+
+    - name: Deploy with gh-pages
+      run: |
+        git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        npm run deploy -- -u "github-actions-bot <support+actions@github.com>"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

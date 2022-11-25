@@ -31,9 +31,8 @@
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
-		"predeploy-dev": "npm run build-dev",
-		"deploy-dev": "gh-pages -d build",
-		"deploy-gh-dev": "npm run predeploy-dev && npm run deploy-dev",
+		"predeploy": "npm run build-dev",
+		"deploy": "gh-pages -d build",
 		"start": "react-scripts start",
 		"build-dev": "npx env-cmd -f .env.dev react-scripts build",
 		"build-sit": "npx env-cmd -f .env.sit react-scripts build",
