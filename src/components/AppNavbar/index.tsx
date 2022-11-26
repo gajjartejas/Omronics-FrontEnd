@@ -55,7 +55,7 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
 
 					<Stack direction="row" spacing={3} sx={{ mr: 10, display: { xs: "none", sm: "block" } }}>
 						{items.map((item) => (
-							<Button color="secondary" {...bindHover(popupState)} key={item}>
+							<Button sx={{"&:hover": { color: "#DC004E" }}} color="secondary" {...bindHover(popupState)} key={item}>
 								{item}
 							</Button>
 						))}

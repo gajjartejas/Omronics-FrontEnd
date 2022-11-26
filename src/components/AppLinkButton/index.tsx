@@ -1,0 +1,22 @@
+import * as React from "react";
+
+//Third Party
+import { Link, SxProps, Theme, Typography } from "@mui/material";
+
+interface Props {
+	title: string;
+	onClick?: () => void;
+	sx?: SxProps<Theme> | undefined;
+}
+
+const AppNavbar: React.FC<Props> = (props: Props) => {
+	const { title, onClick, sx } = props;
+
+	return (
+		<Link sx={{ alignSelf: "flex-start" }} component="button" onClick={onClick}>
+			<Typography sx={{ color: "#333333", "&:hover": { color: "#DC004E" }, ...sx }}>{title}</Typography>
+		</Link>
+	);
+};
+
+export default AppNavbar;
