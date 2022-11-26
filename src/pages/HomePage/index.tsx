@@ -1,15 +1,7 @@
-import React from "react";
-import "../../App.css";
-import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
-import Button from "@mui/material/Button";
+import "../../App.css";
 
 function HomePage() {
-	let navigate = useNavigate();
-
-	const onClick = () => {
-		navigate("/contact-us");
-	};
 	return (
 		<div className="App">
 			{/* <header className="App-header"></header> */}

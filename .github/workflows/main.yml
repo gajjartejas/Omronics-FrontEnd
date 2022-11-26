@@ -1,0 +1,32 @@
+# This script deploys your website automatically
+name: CI
+
+# Only trigger this script when you push to the master branch
+on:
+  push:
+    branches: [ main ]
+
+# Specify the tasks to run when this script gets triggered
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16.18.1'
+        
+    - name: Install node modules
+      run: npm install
+
+    - name: Commit report
+      run: |
+          git config --global user.name 'gajjartejas'
+          git config --global user.email 'gajjartejas26@gmail.com'
+
+    - name: Deploy with gh-pages
+      run: |
+        git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        npm run deploy -- -u "github-actions-bot <support+actions@github.com>"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
