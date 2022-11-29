@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.app .image-gallery,
+.app-sandbox {
+  margin: 0 auto;
+  width: 65%;
+}
+
+@media (max-width: 1024px) {
+  .app .image-gallery,
+  .app-sandbox {
+    width: 100%;
+  }
+}

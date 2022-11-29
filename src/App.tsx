@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound";
 import ContactUs from "./pages/ContactUs";
 
 import "./App.css";
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppNavbar from "./components/AppNavbar";
 import Config from "./config";
