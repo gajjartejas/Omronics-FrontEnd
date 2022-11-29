@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import '../../App.css';
 import Image from 'mui-image';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
