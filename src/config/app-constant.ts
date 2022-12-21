@@ -3,7 +3,12 @@ App constants
  */
 
 const Constant = {
-  HOME_MENU_OPTIONS: ['Home', 'Products & Brands', 'About Us', 'Contact Us'],
+  HOME_MENU_OPTIONS: [
+    { id: 0, name: 'Home' },
+    { id: 1, name: 'Products & Brands' },
+    { id: 2, name: 'About Us' },
+    { id: 3, name: 'Contact Us' },
+  ],
   HOME_PRODUCTS: [
     { id: 0, name: 'CABLE HARNESS' },
     { id: 1, name: 'INTERFACE AND\nRELAY MODULE' },

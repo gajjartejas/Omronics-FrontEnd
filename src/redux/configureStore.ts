@@ -1,19 +1,28 @@
-import { Store, createStore, applyMiddleware, Action } from "redux";
-import { useDispatch } from "react-redux";
-import thunk, { ThunkDispatch } from "redux-thunk";
-import { composeWithDevTools } from "@redux-devtools/extension";
+import { useDispatch } from 'react-redux';
+import { Action } from 'redux';
+import thunk, { ThunkDispatch } from 'redux-thunk';
+import rootReducer from './reducers';
+import { configureStore } from '@reduxjs/toolkit';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer, persistStore } from 'redux-persist';
 
-import rootReducer from "./reducers";
+//Guide: https://blog.logrocket.com/persist-state-redux-persist-redux-toolkit-react/
+const persistConfig = {
+  key: 'root',
+  storage,
+};
 
-import { initialState } from "./system/SystemState";
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-function configureStore(initialState: any): Store<any> {
-	const composeEnhancers = composeWithDevTools({});
-	const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunk)));
-	return store;
-}
+export const store = configureStore({
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== 'production',
+  middleware: [thunk],
+});
 
-export const store = configureStore(initialState);
+export const persistor = persistStore(store)
+
+
 export type RootState = ReturnType<typeof store.getState>;
 export type ThunkAppDispatch = ThunkDispatch<RootState, void, Action>;
 

@@ -9,7 +9,7 @@ interface Props {
   sx?: SxProps<Theme> | undefined;
 }
 
-const AppNavbar: React.FC<Props> = (props: Props) => {
+const AppLinkButton: React.FC<Props> = (props: Props) => {
   const { title, onClick, sx } = props;
 
   return (
@@ -21,4 +21,4 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default AppNavbar;
+export default AppLinkButton;

@@ -1,25 +1,34 @@
-import React, { FC } from 'react';
-import { createTheme } from '@mui/material/styles';
+import { FC } from 'react';
+
+import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import './App.css';
+
+//Layout
+import { HomeLayout } from './components/HomeLayout';
+
+//Pages
+import SignIn from './pages/Admin/AdminLogin/SignIn';
+import Dashboard from './pages/Admin/Dashboard/Dashboard';
+import ContactUs from './pages/ContactUs';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
-import ContactUs from './pages/ContactUs';
-
-import './App.css';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Route, Routes } from 'react-router-dom';
-import AppNavbar from './components/AppNavbar';
-import Config from './config';
+import ProductDetail from './pages/ProductDetail';
 import ProductList from './pages/ProductList';
+import AboutUs from './pages/AboutUs';
+import { AuthLayout } from './components/AuthLayout';
 
-//TODO - move this to seperate theme file
+//TODO - move this to separate theme file
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#FFFFFF',
+      main: '#DC004E',
     },
     secondary: {
-      main: '#000000',
+      main: '#ff547a',
     },
   },
   components: {
@@ -34,6 +43,23 @@ const theme = createTheme({
         },
       },
     },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgb(232, 241, 250)',
+          '&:hover': {
+            backgroundColor: 'rgb(250, 232, 241)',
+            // Reset on touch devices, it doesn't add specificity
+            '@media (hover: none)': {
+              backgroundColor: 'rgb(232, 241, 250)',
+            },
+          },
+          '&.Mui-focused': {
+            backgroundColor: 'rgb(0, 241, 232)',
+          },
+        },
+      },
+    },
   },
 });
 
@@ -41,12 +67,22 @@ const App: FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <AppNavbar items={Config.Constants.HOME_MENU_OPTIONS} />
-
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/product-list" element={<ProductList />} />
+          <Route element={<HomeLayout />}>
+            <Route index path="/" element={<HomePage />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/product-list" element={<ProductList />} />
+            <Route path="/product-detail/:productId" element={<ProductDetail />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/about-us" element={<AboutUs />} />
+          </Route>
+
+            <Route path="/admin/login" element={<SignIn />} />
+
+          <Route path="/admin" element={<AuthLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+          </Route>
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
