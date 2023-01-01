@@ -20,16 +20,25 @@ import {
 import { bindHover, usePopupState } from 'material-ui-popup-state/hooks';
 import Image from 'mui-image';
 import AppNavbarPopover from '../AppNavbarPopover';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  items: string[];
+  items: { id: number; name: string }[];
   window?: () => Window;
 }
 const drawerWidth = 240;
 
 const AppNavbar: React.FC<Props> = (props: Props) => {
+  //Const
   const { window, items } = props;
   const container = window !== undefined ? () => window().document.body : undefined;
+  const navigate = useNavigate();
+  const popupState = usePopupState({
+    variant: 'popover',
+    popupId: 'demoPopover',
+  });
+
+  //State
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -43,22 +52,38 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
       <Divider />
       <List>
         {items.map(item => (
-          <ListItem key={item} disablePadding>
+          <ListItem key={item.id.toString()} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
     </Box>
   );
-  const popupState = usePopupState({
-    variant: 'popover',
-    popupId: 'demoPopover',
-  });
+
+  const onClickMenuButton = (item: { id: number; name: string }, index: number) => {
+    switch (item.id) {
+      case 0:
+        navigate('/');
+        break;
+      case 1:
+        navigate('/');
+        break;
+      case 2:
+        navigate('/about-us');
+        break;
+      case 3:
+        navigate('/contact-us');
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
-      <AppBar sx={{}} component="nav">
+      <AppBar sx={{ background: '#ffffff' }} component="nav">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -75,11 +100,12 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
           <Stack direction="row" spacing={3} sx={{ mr: 10, display: { xs: 'none', sm: 'block' } }}>
             {items.map((item, index) => (
               <Button
-                sx={{ '&:hover': { color: '#DC004E' } }}
+                onClick={() => onClickMenuButton(item, index)}
+                sx={{ color: '#000000', '&:hover': { color: '#DC004E' } }}
                 color="secondary"
                 {...(index === 1 && bindHover(popupState))}
-                key={item}>
-                {item}
+                key={item.id}>
+                {item.name}
               </Button>
             ))}
           </Stack>

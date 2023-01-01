@@ -2,6 +2,7 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 import '../../App.css';
 import Image from 'mui-image';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
+import Components from '../..//components';
 
 var Carousel = require('react-responsive-carousel').Carousel;
 
@@ -49,7 +50,7 @@ function HomePage() {
   return (
     <div className="App">
       {/* <header className="App-header"></header> */}
-      <Box sx={{ height: height * 0.7, width: '100%' }}>
+      {/* <Box sx={{ height: height * 0.7, width: '100%' }}>
         <Carousel
           dynamicHeight={false}
           showThumbs={false}
@@ -62,27 +63,16 @@ function HomePage() {
           emulateTouchy={true}
           autoPlay={true}>
           <Box sx={{ height: height * 0.7, width: '100%' }}>
-            <Image
-              fit={'cover'}
-              src={
-                'https://cdn-fkkio.nitrocdn.com/VKydfxMfuTqEPXXbpEhRKylZrXbYjLMM/assets/static/optimized/rev-5268f6f/wp-content/uploads/2020/11/1852-x810_4-1.png'
-              }
-              width={'100%'}
-            />
+            <Image fit={'cover'} src={require('../../assets/svg/cover1.svg').default} width={'100%'} />
             {TextDescription}
           </Box>
           <Box sx={{ height: height * 0.7, width: '100%' }}>
-            <Image
-              fit={'cover'}
-              src={
-                'https://cdn-fkkio.nitrocdn.com/VKydfxMfuTqEPXXbpEhRKylZrXbYjLMM/assets/static/optimized/rev-5268f6f/wp-content/uploads/2020/11/Website-banner-File-01-1.jpg'
-              }
-              width={'100%'}
-            />
+            <Image fit={'cover'} src={require('../../assets/svg/cover1.svg').default} width={'100%'} />
             {TextDescription}
           </Box>
         </Carousel>
-      </Box>
+      </Box> */}
+      <Components.WorkInProgress/>
     </div>
   );
 }

@@ -1,15 +1,17 @@
 {
 	"name": "omronics-frontend",
 	"version": "0.1.0",
-	"homepage": "https://gajjartejas.github.io/Omronics-FrontEnd",
+	"homepage": "https://omronics.com",
 	"private": true,
 	"dependencies": {
 		"@emotion/react": "^11.10.5",
 		"@emotion/styled": "^11.10.5",
 		"@fontsource/roboto": "^4.5.8",
+		"@googlemaps/react-wrapper": "^1.1.35",
 		"@mui/icons-material": "^5.10.14",
 		"@mui/material": "^5.10.14",
 		"@redux-devtools/extension": "^3.2.3",
+		"@reduxjs/toolkit": "^1.9.1",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
@@ -27,6 +29,8 @@
 		"react-router": "^6.4.3",
 		"react-router-dom": "^6.4.3",
 		"react-scripts": "5.0.1",
+		"recharts": "^2.2.0",
+		"redux-persist": "^6.0.0",
 		"redux-thunk": "^2.4.2",
 		"typescript": "^4.9.3",
 		"web-vitals": "^2.1.4"
@@ -60,6 +64,7 @@
 		]
 	},
 	"devDependencies": {
+		"@types/google.maps": "^3.50.5",
 		"@types/mui-image": "^1.0.1",
 		"@types/react-router": "^5.1.19",
 		"@types/react-router-dom": "^5.3.3",
