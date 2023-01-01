@@ -1,10 +1,9 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import '../../App.css';
-import Image from 'mui-image';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import Components from '../..//components';
 
-var Carousel = require('react-responsive-carousel').Carousel;
+let Carousel = require('react-responsive-carousel').Carousel;
 
 function HomePage() {
   const { height } = useWindowDimensions();

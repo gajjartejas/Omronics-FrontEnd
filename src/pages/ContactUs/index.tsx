@@ -60,7 +60,7 @@ function ContactUs() {
               <Typography sx={{ color: '#181818', fontSize: 14, fontWeight: '700' }}>
                 {'Email: '}
                 <Typography component="span" display={'inline'} sx={{ color: '#181818', fontSize: 14 }}>
-                  {'omronics@hotmail.com'}
+                  {'chandrakant@omronics.com'}
                 </Typography>
               </Typography>
 

@@ -27,6 +27,72 @@ const Constant = {
     { id: 4, name: 'SUNCHU' },
     { id: 5, name: 'XINIYA' },
   ],
+  ADMIN_ITEMS: [
+    {
+      id: 0,
+      title: '',
+      items: [
+        {
+          id: 0,
+          title: 'Dashboard',
+          route: '/admin/dashboard',
+        },
+      ],
+    },
+    {
+      id: 0,
+      title: 'Manage',
+      items: [
+        {
+          id: 0,
+          title: 'Products',
+          route: '/admin/dashboard/products',
+        },
+        {
+          id: 2,
+          title: 'Images',
+          route: '/admin/dashboard/images',
+        },
+        {
+          id: 3,
+          title: 'Resources',
+          route: '/admin/dashboard/resources',
+        },
+        {
+          id: 4,
+          title: 'Manufacturers',
+          route: '/admin/dashboard/manufacturers',
+        },
+        {
+          id: 5,
+          title: 'Categories',
+          route: '/admin/dashboard/categories',
+        },
+      ],
+    },
+    {
+      id: 0,
+      title: 'Pages',
+      items: [
+        {
+          id: 0,
+          title: 'Home',
+        },
+        {
+          id: 2,
+          title: 'Products & Brands',
+        },
+        {
+          id: 3,
+          title: 'About US',
+        },
+        {
+          id: 4,
+          title: 'Contact US',
+        },
+      ],
+    },
+  ],
 };
 
 export default Constant;
