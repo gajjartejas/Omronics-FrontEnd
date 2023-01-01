@@ -4,7 +4,7 @@ import { useOutlet } from 'react-router-dom';
 import Config from '../../config';
 import AppNavbar from '../AppNavbar';
 
-export const HomeLayout = () => {
+const HomeLayout = () => {
   const account = useSelector(selectAccount);
   const outlet = useOutlet();
 
@@ -17,3 +17,5 @@ export const HomeLayout = () => {
     </div>
   );
 };
+
+export default HomeLayout;

@@ -3,12 +3,15 @@ import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+// @ts-ignore
+import { NotificationContainer } from 'react-notifications';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './App.css';
+import 'react-notifications/lib/notifications.css';
 
 //Layout
-import { HomeLayout } from './components/HomeLayout';
+import HomeLayout from './components/HomeLayout';
 
 //Pages
 import SignIn from './pages/Admin/AdminLogin/SignIn';
@@ -19,7 +22,17 @@ import NotFound from './pages/NotFound';
 import ProductDetail from './pages/ProductDetail';
 import ProductList from './pages/ProductList';
 import AboutUs from './pages/AboutUs';
-import { AuthLayout } from './components/AuthLayout';
+
+//Admin Pages
+import AuthLayout from './components/AuthLayout';
+import AddProduct from './pages/Admin/ManageProducts/AddProduct';
+import ManageProductList from './pages/Admin/ManageProducts/ManageProductList';
+import ManageImageList from './pages/Admin/ManageImages/ManageImageList';
+import ManageResourceList from 'pages/Admin/ManageResources/ManageResourcesList';
+import ManufacturerList from 'pages/Admin/ManageManufacturers/ManufacturerList';
+import ManageCategoryList from 'pages/Admin/ManageCategories/ManageCategoryList';
+import AddCategory from 'pages/Admin/ManageCategories/AddCategory';
+import AddManufacturerList from "./pages/Admin/ManageManufacturers/AddManufacturer";
 
 //TODO - move this to separate theme file
 const theme = createTheme({
@@ -77,15 +90,29 @@ const App: FC = () => {
             <Route path="/about-us" element={<AboutUs />} />
           </Route>
 
-            <Route path="/admin/login" element={<SignIn />} />
+          <Route path="/admin/login" element={<SignIn />} />
 
           <Route path="/admin" element={<AuthLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
+
+            <Route path="dashboard/products" element={<ManageProductList />} />
+            <Route path="dashboard/add-product" element={<AddProduct />} />
+
+            <Route path="dashboard/images" element={<ManageImageList />} />
+            <Route path="dashboard/resources" element={<ManageResourceList />} />
+
+            <Route path="dashboard/manufacturers" element={<ManufacturerList />} />
+            <Route path="dashboard/add-manufacturer" element={<AddManufacturerList />} />
+
+            <Route path="dashboard/categories" element={<ManageCategoryList />} />
+            <Route path="dashboard/add-category" element={<AddCategory />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+
+      <NotificationContainer />
     </ThemeProvider>
   );
 };
