@@ -36,6 +36,7 @@ const Constant = {
           id: 0,
           title: 'Dashboard',
           route: '/admin/dashboard',
+          icon: 'dashboard'
         },
       ],
     },
@@ -47,26 +48,31 @@ const Constant = {
           id: 0,
           title: 'Products',
           route: '/admin/dashboard/products',
+          icon: 'shopping_cart'
         },
         {
           id: 2,
           title: 'Images',
           route: '/admin/dashboard/images',
+          icon: 'photo_library'
         },
         {
           id: 3,
           title: 'Resources',
           route: '/admin/dashboard/resources',
+          icon: 'description'
         },
         {
           id: 4,
           title: 'Manufacturers',
           route: '/admin/dashboard/manufacturers',
+          icon: 'business'
         },
         {
           id: 5,
           title: 'Categories',
           route: '/admin/dashboard/categories',
+          icon: 'category'
         },
       ],
     },
@@ -77,19 +83,34 @@ const Constant = {
         {
           id: 0,
           title: 'Home',
+          icon: 'home'
         },
         {
           id: 2,
           title: 'Products & Brands',
+          icon: 'shopping_cart'
         },
         {
           id: 3,
           title: 'About US',
+          icon: 'verified_user'
         },
         {
           id: 4,
           title: 'Contact US',
+          icon: 'verified_user'
         },
+      ],
+    },
+    {
+      id: 0,
+      title: 'Others',
+      items: [
+        {
+          id: 0,
+          title: 'Logout',
+          icon: 'power_off'
+        }
       ],
     },
   ],

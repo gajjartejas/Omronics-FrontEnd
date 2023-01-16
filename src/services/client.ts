@@ -1,0 +1,102 @@
+//Third Party
+import axios, { AxiosInstance } from 'axios';
+
+const baseUrl = `${process.env.REACT_APP_API_URL}`;
+const authHeader = `${process.env.REACT_APP_API_HEADER}`;
+
+export const appApiClient = axios.create({
+  baseURL: baseUrl,
+  responseType: 'json',
+
+  headers: {
+    'content-type': 'application/json',
+  },
+  timeout: 60000,
+});
+
+interface IAPIBase {}
+
+const get = async <Type>(path: string, apiClient: AxiosInstance = appApiClient): Promise<Type | null> => {
+  //Const
+  console.log('---API CALL---');
+  console.log('URL:', path);
+  console.log('METHOD:GET');
+
+  try {
+    const config = {};
+    let rawResponse = await apiClient.get<IAPIBase>(path, config);
+    console.log('API RESPONSE:', path, rawResponse.data);
+
+    return rawResponse.data as Type;
+  } catch (err: any) {
+    return null;
+  }
+};
+
+const post = async <Type, DataType>(
+  path: string,
+  formData: DataType,
+  apiClient: AxiosInstance = appApiClient,
+): Promise<Type | null> => {
+  console.log('---API CALL---');
+  console.log('URL:', path);
+  console.log('METHOD:POST');
+  console.log('FORM DATA:', formData);
+
+  try {
+    const config = {};
+    let rawResponse = await apiClient.post<IAPIBase>(path, formData, config);
+    console.log('API RESPONSE:', path, rawResponse.data);
+
+    return rawResponse as Type;
+  } catch (err: any) {
+    console.log('ERROR:', err);
+
+    return null;
+  }
+};
+
+const patch = async <Type, DataType>(
+  path: string,
+  formData: DataType,
+  apiClient: AxiosInstance = appApiClient,
+): Promise<Type | null> => {
+  console.log('---API CALL---');
+  console.log('URL:', path);
+  console.log('METHOD:PATCH');
+  console.log('FORM DATA:', formData);
+
+  try {
+    const config = {};
+    let rawResponse = await apiClient.patch<IAPIBase>(path, formData, config);
+    console.log('API RESPONSE:', path, rawResponse.data);
+
+    return rawResponse as Type;
+  } catch (err: any) {
+    console.log('ERROR:', err);
+
+    return null;
+  }
+};
+
+const deleteMethod = async <Type>(path: string, apiClient: AxiosInstance = appApiClient): Promise<Type | null> => {
+  console.log('---API CALL---');
+  console.log('URL:', path);
+  console.log('METHOD:DELETE');
+
+  try {
+    const config = {};
+    let rawResponse = await apiClient.delete<IAPIBase>(path, config);
+    console.log('API RESPONSE:', path, rawResponse.data);
+
+    return rawResponse as Type;
+  } catch (err: any) {
+    console.log('ERROR:', err);
+
+    return null;
+  }
+};
+
+const APIClient = { get, post, patch, delete: deleteMethod };
+
+export default APIClient;

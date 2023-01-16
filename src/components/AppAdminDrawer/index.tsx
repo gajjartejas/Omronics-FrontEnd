@@ -3,7 +3,7 @@ import * as React from 'react';
 //Third Party
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { IconButton, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
+import { Icon, IconButton, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -77,9 +77,9 @@ const AppAdminDrawer: React.FC<Props> = (props: Props) => {
               </ListSubheader>
               {v.items.map((c, j) => {
                 return (
-                  <ListItemButton onClick={() => onPressItem(c, i, j)}>
+                  <ListItemButton key={c.id.toString()} onClick={() => onPressItem(c, i, j)}>
                     <ListItemIcon>
-                      <AssignmentIcon />
+                      <Icon>{c.icon}</Icon>
                     </ListItemIcon>
                     <ListItemText primary={c.title} />
                   </ListItemButton>
