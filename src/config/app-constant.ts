@@ -116,6 +116,17 @@ const Constant = {
         },
       ],
     },
+    {
+      id: 0,
+      title: 'Others',
+      items: [
+        {
+          id: 0,
+          title: 'Logout',
+          icon: 'power_off'
+        }
+      ],
+    },
   ],
 };
 
