@@ -19,6 +19,7 @@ export interface Props {
 }
 
 export default function MultipleSelectChip(props: Props) {
+  //Const
   const { items, label } = props;
 
   const renderItem = (
@@ -28,7 +29,7 @@ export default function MultipleSelectChip(props: Props) {
   ) => {
     return (
       <>
-        <li key={option.id} {...props}>
+        <li key={option.id.toString()} {...props}>
           <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={state.selected} />
           {option.name}
         </li>

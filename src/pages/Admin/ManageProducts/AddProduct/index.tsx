@@ -3,18 +3,30 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import MarkdownIt from 'markdown-it';
 import React, { useEffect, useRef } from 'react';
 import MdEditor from 'react-markdown-editor-lite';
-// import style manually
 import Components from 'components';
-import ImageUploading, { ImageListType } from 'react-images-uploading';
+import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading';
 import 'react-markdown-editor-lite/lib/index.css';
-import { FileContent, useFilePicker } from 'use-file-picker';
+import { useFilePicker } from 'use-file-picker';
 import CategoryService from 'services/api-service/category';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
-import { IBaseCategory, IBaseConnectId, IBaseProduct, ICategory, IManufacturer } from 'services/api-service/types';
-//@ts-ignore
-import { NotificationManager } from 'react-notifications';
+import {
+  IBaseConnectId,
+  IBaseProduct,
+  IBaseProductResource,
+  ICategory,
+  IManufacturer,
+} from 'services/api-service/types';
 import ManufacturerService from 'services/api-service/manufacturer';
 import ProductService from 'services/api-service/product';
+import PQueue from 'p-queue';
+import FileUploader, { FileUploaderResult } from 'services/file-uploader';
+import { toast } from 'react-toastify';
+// @ts-ignore
+import { v4 as uuidv4 } from 'uuid';
+import ProductImageService from '../../../../services/api-service/product-image';
+import ProductResourceService from '../../../../services/api-service/product-resource';
+import { useNavigate } from 'react-router';
+import AppHelpers from '../../../../helpers';
 
 const MAX_IMAGE_UPLOAD = 50;
 const MAX_FILE_UPLOAD = 50;
@@ -39,6 +51,24 @@ interface IAddManufacturer extends IManufacturer {
   selected: boolean;
 }
 
+export enum UploadStatus {
+  PENDING,
+  UPLOADING,
+  FINISH,
+  ERROR,
+  REMOTE,
+}
+
+// @ts-ignore
+export interface FileContentExtra {
+  id: string;
+  file: File | null;
+  status: UploadStatus;
+  type: string | null;
+  remoteFileName: string | null;
+  title: string | null;
+}
+
 function AddProduct() {
   //Refs
   const refFileReplaceIndex = useRef<number | null>(null);
@@ -46,26 +76,35 @@ function AddProduct() {
   const selectedCategoryIds = useRef<IBaseConnectId[]>([]);
   const mdParser = new MarkdownIt(/* Markdown-it options */);
 
-  //States
-  const [images, setImages] = React.useState([]);
-  const [files, setFiles] = React.useState<FileContent[]>([]);
-  const [fileResources, setFileResources] = React.useState<Map<number, string>>(new Map());
+  //Const
+  let navigate = useNavigate();
+
+  //Images
+  const [images, setImages] = React.useState<ImageType[]>([]);
+  const [isImageUploading, setIsImageUploading] = React.useState<boolean>(false);
+
+  //Files
+  const [files, setFiles] = React.useState<FileContentExtra[]>([]);
+  const [isFileUploading, setIsFileUploading] = React.useState<boolean>(false);
+
+  //Fields
   const [categories, setCategories] = React.useState<IAddCategory[]>([]);
   const [manufacturers, setManufacturers] = React.useState<IAddManufacturer[]>([]);
   const [partNumber, setPartNumber] = React.useState('');
   const [modelNumber, setModelNumber] = React.useState('');
   const [name, setName] = React.useState<string>('');
   const [description, setDescription] = React.useState<string>('');
+  const [isProductCreating, setIsProductCreating] = React.useState<boolean>(false);
 
   //Other
-  const [openFileSelector, { filesContent, loading, errors }] = useFilePicker({
+  const [openFileSelector, { plainFiles }] = useFilePicker({
     readAs: 'DataURL',
     accept: ['.zip', '.pdf', '.exe', '.doc', '.docx'],
-
+    readFilesContent: false,
     multiple: true,
     limitFilesConfig: { max: MAX_FILE_UPLOAD },
     // minFileSize: 1,
-    maxFileSize: 50, // in megabytes
+    maxFileSize: 200, // in megabytes
   });
 
   React.useEffect(() => {
@@ -115,22 +154,44 @@ function AddProduct() {
   };
 
   useEffect(() => {
-    if (!filesContent || filesContent.length < 1) {
+    if (plainFiles && plainFiles.length > 0) {
+      console.log('filesContent', plainFiles[0].name);
+      console.log('filesContent', plainFiles[0].webkitRelativePath);
+    }
+
+    if (!plainFiles || plainFiles.length < 1) {
       return;
     }
-    console.log('filesContent........', filesContent);
+    console.log('filesContent........', plainFiles);
 
     if (refFileReplaceIndex.current !== null) {
       setFiles(f => {
         let newFiles = [...f];
-        newFiles[refFileReplaceIndex.current!] = filesContent[0];
+        newFiles[refFileReplaceIndex.current!] = {
+          file: plainFiles[0],
+          id: uuidv4(),
+          status: UploadStatus.PENDING,
+          type: null,
+          remoteFileName: null,
+          title: null,
+        };
         return newFiles;
       });
     } else {
       console.log('setFiles........');
-      setFiles(f => [...f, ...filesContent]);
+      let newFileContents = plainFiles.map(v => {
+        return {
+          file: v,
+          id: uuidv4(),
+          status: UploadStatus.PENDING,
+          type: null,
+          remoteFileName: null,
+          title: null,
+        };
+      });
+      setFiles(f => [...f, ...newFileContents]);
     }
-  }, [filesContent]);
+  }, [plainFiles]);
 
   // Finish!
   function handleEditorChange({ html, text }: any) {
@@ -139,23 +200,55 @@ function AddProduct() {
   }
 
   const onChangeImage = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
-    setImages(imageList as never[]);
+    console.log('addUpdateIndex', addUpdateIndex);
+    console.log('imageList', imageList);
+
+    let updatedImages = imageList.map((v, i) => {
+      let newImage: ImageType = {
+        ...v,
+        id: v.id || uuidv4(),
+        status: v.status || UploadStatus.PENDING,
+        remoteFileName: v.remoteFileName || null,
+      };
+      return newImage;
+    });
+    setImages(updatedImages);
   };
 
   const onFileUpload = () => {};
-  const onFileUpdate = (item: FileContent, index: number) => {
+
+  const onFileUpdate = (item: FileContentExtra, index: number) => {
     refFileReplaceIndex.current = index;
 
     openFileSelector();
   };
 
-  const onFileRemove = (item: FileContent, index: number) => {
-    let newFiles = files.filter(v => v !== item);
-    setFiles(newFiles);
+  const onFileRemove = async (item: FileContentExtra, index: number) => {
+    if (files[index].remoteFileName) {
+      try {
+        const productResourcesId = Number(item.id);
+        await ProductResourceService.deleteProductResource(productResourcesId);
+        await FileUploader.deleteFile<FileUploaderResult>('', new FormData(), {
+          p: 'resources',
+          del: files[index].remoteFileName,
+        });
+        const newFiles = files.filter(v => v !== item);
+        setFiles(newFiles);
+      } catch (e) {
+        toast.error(JSON.stringify(e));
+      }
+    } else {
+      let newFiles = files.filter(v => v !== item);
+      setFiles(newFiles);
+    }
   };
 
   const onFileSelectResourcesType = (item: string, index: number) => {
-    fileResources.set(index, item);
+    setFiles(v => {
+      let newFiles = [...v];
+      newFiles[index].type = item;
+      return newFiles;
+    });
   };
 
   ///
@@ -177,13 +270,11 @@ function AddProduct() {
   ///
   const onChangeCategoriesTreeSelect = (currentNode: any, selectedNodes: any) => {
     console.log('onChange::', selectedNodes);
-    let ids = selectedNodes
+    selectedCategoryIds.current = selectedNodes
       .filter((v: any) => !(v.children && v.children.length > 0))
       .map((v: any) => {
         return { id: v.id };
       });
-
-    selectedCategoryIds.current = ids;
   };
 
   const onActionCategoriesTreeSelect = (node: any, action: any) => {
@@ -197,23 +288,36 @@ function AddProduct() {
   //
   const onClickSave = async () => {
     if (!name || name.trim().length < 1) {
-      NotificationManager.error('Error', 'Product name is required!', 5000, () => {});
+      toast.error('Product name is required!');
       return;
     }
     if (!name || name.trim().length < 1) {
-      NotificationManager.error('Error', 'Product name is required!', 5000, () => {});
+      toast.error('Product name is required!');
       return;
     }
 
     if (!selectedManufacturerId.current) {
-      NotificationManager.error('Error', 'Manufacturer is required!', 5000, () => {});
+      toast.error('Manufacturer is required!');
       return;
     }
 
     if (!selectedCategoryIds.current || selectedCategoryIds.current.length < 1) {
-      NotificationManager.error('Error', 'Category is required!', 5000, () => {});
+      toast.error('Category is required!');
       return;
     }
+
+    let imagesToCreate = images.map(v => {
+      return { url: v.remoteFileName as string };
+    });
+
+    let resourceesToCreate = files.map(v => {
+      return {
+        link: v.remoteFileName,
+        type: v.type as any,
+        title: v.file?.name || '',
+        description: '',
+      } as IBaseProductResource;
+    });
 
     const newProduct: IBaseProduct = {
       name: name,
@@ -221,15 +325,20 @@ function AddProduct() {
       partNumber: partNumber,
       modelNumber: modelNumber,
       categories: { connect: selectedCategoryIds.current },
-      images: { connect: [] },
-      resourcees: { connect: [] },
+      images: { create: imagesToCreate },
+      resourcees: { create: resourceesToCreate },
       manufacturer: { connect: selectedManufacturerId.current },
     };
 
-    const result = await ProductService.addProduct(newProduct);
-    if (result) {
-      NotificationManager.success('Product added successfully!');
-      clearForm();
+    setIsProductCreating(true);
+    try {
+      const result = await ProductService.addProduct(newProduct);
+      if (result) {
+        toast.success('Product added successfully!');
+        navigate('/admin/dashboard/products');
+      }
+    } catch (e) {
+      toast.error(JSON.stringify(e));
     }
   };
 
@@ -238,7 +347,6 @@ function AddProduct() {
     setDescription('');
     setImages([]);
     setFiles([]);
-    setFileResources(new Map());
     setCategories([]);
     setManufacturers([]);
     setPartNumber('');
@@ -251,6 +359,128 @@ function AddProduct() {
     let newManufacturers = [...manufacturers];
     newManufacturers.forEach(v => (v.selected = false));
     setManufacturers(newManufacturers);
+  };
+
+  const onClickUploadImage = () => {
+    let isAllImageUploaded = images.filter(v => v.status !== UploadStatus.FINISH).length === 0;
+    if (isAllImageUploaded) {
+      toast.warning('No new image to upload');
+      return;
+    }
+
+    setIsImageUploading(true);
+
+    //Set uploading status for pending uploads
+    let updatedImages = images.map(v => {
+      return { ...v, status: v.status === UploadStatus.PENDING ? UploadStatus.UPLOADING : v.status };
+    });
+    setImages([...updatedImages]);
+
+    const queue = new PQueue({ concurrency: 2 });
+    queue.on('idle', () => {
+      console.log(`Queue is idle.  Size: ${queue.size}  Pending: ${queue.pending}`);
+      setIsImageUploading(false);
+      toast.info('File upload complete.');
+    });
+
+    queue.on('error', error => {
+      console.error('Error IN FILE UPLOAD:', error);
+    });
+
+    queue.on('completed', (result: FileUploaderResult) => {
+      console.log('completed:', result);
+
+      setImages(v => {
+        let updatedImages1 = [...v];
+        updatedImages1[result.index].status =
+          result && result.data && result.data.name ? UploadStatus.FINISH : UploadStatus.ERROR;
+        updatedImages1[result.index].remoteFileName =
+          result && result.data && result.data.name ? result.data.name : null;
+        return updatedImages1;
+      });
+    });
+
+    for (let i = 0; i < images.length; i++) {
+      const image = images[i];
+      if (image.status === UploadStatus.FINISH) {
+        continue;
+      }
+      const data = new FormData();
+      data.append('file', image.file!);
+      const params = { p: 'images' };
+      let promise = FileUploader.upload<FileUploaderResult>('', data, params, i);
+      queue.add(() => promise);
+    }
+  };
+
+  const onClickUploadFile = () => {
+    let isAllFileUploaded = files.filter(v => v.status !== UploadStatus.FINISH).length === 0;
+    if (isAllFileUploaded) {
+      toast.warning('No new file to upload');
+      return;
+    }
+    setIsFileUploading(true);
+
+    //Set uploading status for pending uploads
+    let updatedFiles = files.map(v => {
+      return { ...v, status: v.status === UploadStatus.PENDING ? UploadStatus.UPLOADING : v.status };
+    });
+    setFiles([...updatedFiles]);
+
+    const queue = new PQueue({ concurrency: 2 });
+
+    queue.on('idle', () => {
+      console.log(`Queue is idle.  Size: ${queue.size}  Pending: ${queue.pending}`);
+      setIsFileUploading(false);
+      toast.info('File upload complete.');
+    });
+
+    queue.on('error', error => {
+      console.error('Error IN FILE UPLOAD:', error);
+    });
+
+    queue.on('completed', (result: FileUploaderResult) => {
+      console.log('completed:', result);
+
+      setFiles(v => {
+        let updatedFiles1 = [...v];
+        updatedFiles1[result.index].status =
+          result && result.data && result.data.name ? UploadStatus.FINISH : UploadStatus.ERROR;
+        updatedFiles1[result.index].remoteFileName =
+          result && result.data && result.data.name ? result.data.name : null;
+        return updatedFiles1;
+      });
+    });
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.status === UploadStatus.FINISH) {
+        continue;
+      }
+      const data = new FormData();
+      data.append('file', file.file!);
+      const params = { p: 'resources' };
+      let promise = FileUploader.upload<FileUploaderResult>('', data, params, i);
+      queue.add(() => promise);
+    }
+  };
+
+  const onImageRemoveServer = async (item: ImageType, index: number, callback: (index: number) => void) => {
+    if (images[index].remoteFileName) {
+      try {
+        const productImageId = Number(item.id);
+        await ProductImageService.deleteProductImage(productImageId);
+        await FileUploader.deleteFile<FileUploaderResult>('', new FormData(), {
+          p: 'images',
+          del: images[index].remoteFileName,
+        });
+        callback(index);
+      } catch (e) {
+        toast.error(JSON.stringify(e));
+      }
+    } else {
+      callback(index);
+    }
   };
 
   return (
@@ -308,30 +538,40 @@ function AddProduct() {
             />
             <Typography sx={{ mt: 2, mb: 1, fontSize: 16, fontWeight: 400 }}>{'Images'}</Typography>
             <ImageUploading multiple value={images} onChange={onChangeImage} maxNumber={MAX_IMAGE_UPLOAD}>
-              {({
-                imageList,
-                onImageUpload,
-                onImageRemoveAll,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
-                <Grid container direction="row" justifyContent="left" alignItems="center" sx={{}}>
-                  <Components.ImageCard mode={'add_image'} onClick={onImageUpload} />
-                  {imageList.map((image, index) => (
-                    <Components.ImageCard
-                      index={index}
-                      item={image}
-                      mode={'show_image'}
-                      onClick={onImageUpload}
-                      onReplace={(item, index) => onImageUpdate(index)}
-                      onRemove={(item, index) => onImageRemove(index)}
-                    />
-                  ))}
-                </Grid>
+              {({ imageList, onImageUpload, onImageUpdate, onImageRemove, errors }) => (
+                <>
+                  <Grid container direction="row" justifyContent="left" alignItems="center" sx={{}}>
+                    <Components.ImageCard mode={'add_image'} onClick={onImageUpload} />
+                    {imageList.map((image, index) => (
+                      <Components.ImageCard
+                        key={images[index].id}
+                        index={index}
+                        item={images[index]}
+                        status={images[index].status}
+                        mode={'show_image'}
+                        onClick={onImageUpload}
+                        onReplace={(item, index) => onImageUpdate(index)}
+                        onRemove={() => onImageRemoveServer(image, index, onImageRemove)}
+                      />
+                    ))}
+                  </Grid>
+                  <Typography
+                    sx={{
+                      mt: 2,
+                      mb: 1,
+                      fontSize: 16,
+                      fontWeight: 400,
+                      color: 'red',
+                    }}>
+                    {AppHelpers.getReadableError(MAX_IMAGE_UPLOAD, errors)}
+                  </Typography>
+                </>
               )}
             </ImageUploading>
+            <Button disabled={isImageUploading} onClick={onClickUploadImage} sx={{ mt: 2, mb: 2 }} variant="contained">
+              {isImageUploading ? 'PLEASE WAIT...' : 'UPLOAD IMAGES'}
+            </Button>
+
             <Typography sx={{ mt: 2, mb: 1, fontSize: 16, fontWeight: 400 }}>
               {'Resources (Catalog, Manual, Software, Drawing)'}
             </Typography>
@@ -345,9 +585,10 @@ function AddProduct() {
               />
               {files.map((file, index) => (
                 <Components.ResourcesCard
-                  key={file.name + file.lastModified}
+                  key={files[index].id}
                   index={index}
-                  item={file}
+                  item={files[index]}
+                  status={files[index].status}
                   resourcesTypes={['CATALOG', 'DRAWING', 'MANUAL', 'SOFTWARE']}
                   mode={'show_file'}
                   onClick={onFileUpload}
@@ -357,11 +598,14 @@ function AddProduct() {
                 />
               ))}
             </Grid>
-            <Button onClick={onClickSave} sx={{ mt: 2, mb: 2 }} variant="contained">
-              {'SAVE'}
+            <Button disabled={isFileUploading} onClick={onClickUploadFile} sx={{ mt: 2, mb: 2 }} variant="contained">
+              {isFileUploading ? 'PLEASE WAIT...' : 'UPLOAD FILES'}
             </Button>
           </Grid2>
         </Grid2>
+        <Button onClick={onClickSave} sx={{ mt: 2, mb: 2 }} variant="contained">
+          {isProductCreating ? 'Creating Product, Please Wait...' : 'CREATE PRODUCT'}
+        </Button>
       </Container>
     </div>
   );

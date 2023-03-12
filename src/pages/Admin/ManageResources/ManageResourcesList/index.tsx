@@ -6,14 +6,36 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate } from 'react-router';
 import ProductResourceService from 'services/api-service/product-resource';
 import moment from 'moment';
+import useWindowDimensions from '../../../../hooks/useWindowDimensions';
+import { IProductResource } from '../../../../services/api-service/types';
+import Config from '../../../../config';
+
+interface IRowProductResource extends IProductResource {
+  productName: string;
+  productId: string;
+}
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'id', headerName: 'ID', width: 20 },
   {
     field: 'title',
     headerName: 'Title',
-    width: 150,
+    width: 300,
     editable: true,
+  },
+  {
+    field: 'productId',
+    headerName: 'Product Id',
+    width: 80,
+    editable: true,
+    valueGetter: params => params.value || 'N/A',
+  },
+  {
+    field: 'productName',
+    headerName: 'Product Name',
+    width: 300,
+    editable: true,
+    valueGetter: params => params.value || 'N/A',
   },
   {
     field: 'link',
@@ -32,14 +54,6 @@ const columns: GridColDef[] = [
     headerName: 'Type',
     width: 110,
     editable: true,
-  },
-  {
-    field: 'products',
-    headerName: 'Products',
-    type: 'number',
-    width: 110,
-    editable: true,
-    valueFormatter: params => params.value?.length || 'N/A',
   },
   {
     field: 'createdAt',
@@ -61,12 +75,22 @@ const columns: GridColDef[] = [
 
 export default function ManageResourceList() {
   let navigate = useNavigate();
-  const [rows, setRows] = React.useState<any[]>([]);
+  const { height } = useWindowDimensions();
+
+  const [rows, setRows] = React.useState<IRowProductResource[]>([]);
 
   React.useEffect(() => {
     (async () => {
       let manufacturers = await ProductResourceService.getProductResources();
-      setRows(manufacturers!);
+      const transformed = manufacturers?.map(v => {
+        return {
+          ...v,
+          productName: v.products && v.products.length > 0 ? v.products[0].name : 'N/A',
+          productId: v.products && v.products.length > 0 ? v.products[0].id : 'N/A',
+          link: v.link ? Config.Constants.FILE_PATH + v.link : 'N/A',
+        } as IRowProductResource;
+      });
+      setRows(transformed!);
     })();
   }, []);
 
@@ -74,10 +98,10 @@ export default function ManageResourceList() {
     <div>
       <Grid2 sx={{ flex: 1, pt: 8, paddingX: 4 }} container spacing={0}>
         <Stack sx={{ flex: 1 }} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <Typography sx={{ mt: 2, mb: 1, fontSize: 24, fontWeight: '500' }}>{'Resources'}</Typography>
+          <Typography sx={{ mt: 2, mb: 1, fontSize: 24, fontWeight: '500' }}>{'Product Resources'}</Typography>
         </Stack>
-        <Box sx={{ height: 400, width: '100%' }}>
-          <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5]} checkboxSelection />
+        <Box sx={{ height: height * 0.7, width: '100%' }}>
+          <DataGrid rows={rows} columns={columns} pageSize={100} rowsPerPageOptions={[100]} />
         </Box>
       </Grid2>
     </div>

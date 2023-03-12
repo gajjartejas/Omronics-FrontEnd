@@ -1,23 +1,22 @@
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Components from 'components';
 import AppAdminDrawer from 'components/AppAdminDrawer';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 import * as React from 'react';
-//import { useSelector } from 'react-redux';
 import { useOutlet } from 'react-router-dom';
-//import { selectAccount } from '../../redux/selectors/accountSelectors';
 
 function AuthLayout() {
+  //Const
   const { height } = useWindowDimensions();
+  const outlet = useOutlet();
 
+  //State
   const [open, setOpen] = React.useState(true);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  //const account = useSelector(selectAccount);
-  const outlet = useOutlet();
 
   return (
     <Box sx={{ display: 'flex' }}>

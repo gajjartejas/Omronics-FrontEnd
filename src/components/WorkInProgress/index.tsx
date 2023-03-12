@@ -3,6 +3,7 @@ import '../../App.css';
 import { useNavigate } from 'react-router-dom';
 
 function WorkInProgress() {
+  //Const
   const navigate = useNavigate();
 
   const onContactUS = () => {

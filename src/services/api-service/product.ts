@@ -1,5 +1,5 @@
 import APIClient from 'services/client';
-import { IBaseProduct, IProduct } from './types';
+import { IBaseProduct, ICategory, IProduct } from './types';
 
 const getProducts = (): Promise<IProduct[] | null> => {
   let response = APIClient.get<IProduct[]>('/products');
@@ -16,8 +16,8 @@ const addProduct = (data: IBaseProduct): Promise<IProduct | null> => {
   return response;
 };
 
-const updateProduct = (id: number, data: IProduct): Promise<IProduct | null> => {
-  let response = APIClient.patch<IProduct, { data: IProduct }>(`/products/${id}`, { data });
+const updateProduct = (id: number, data: IBaseProduct): Promise<IProduct | null> => {
+  let response = APIClient.patch<IProduct, { data: IBaseProduct }>(`/products/${id}`, { data });
   return response;
 };
 
@@ -26,5 +26,10 @@ const deleteProduct = (id: number): Promise<IProduct | null> => {
   return response;
 };
 
-const ProductService = { getProducts, getProductById, addProduct, updateProduct, deleteProduct };
+const deleteProducts = (data: number[]): Promise<IProduct | null> => {
+  let response = APIClient.post<IProduct, { data: number[] }>(`/products/deleteProducts`, { data });
+  return response;
+};
+
+const ProductService = { getProducts, getProductById, addProduct, updateProduct, deleteProduct, deleteProducts };
 export default ProductService;

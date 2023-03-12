@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 //Third Party
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Icon, IconButton, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import Divider from '@mui/material/Divider';
@@ -71,7 +70,7 @@ const AppAdminDrawer: React.FC<Props> = (props: Props) => {
       <List component="nav">
         {Constant.ADMIN_ITEMS.map((v, i) => {
           return (
-            <React.Fragment>
+            <React.Fragment key={v.id.toString()}>
               <ListSubheader component="div" inset>
                 {v.title}
               </ListSubheader>

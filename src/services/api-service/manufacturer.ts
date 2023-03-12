@@ -1,5 +1,5 @@
 import APIClient from 'services/client';
-import { IBaseManufacturer, IManufacturer } from './types';
+import {IBaseManufacturer, ICategory, IManufacturer} from './types';
 
 const getManufacturers = (): Promise<IManufacturer[] | null> => {
   let response = APIClient.get<IManufacturer[]>('/manufacturers');
@@ -16,13 +16,18 @@ const addManufacture = (data: IBaseManufacturer): Promise<IManufacturer | null> 
   return response;
 };
 
-const updateManufacture = (id: number, data: IManufacturer): Promise<IManufacturer | null> => {
-  let response = APIClient.patch<IManufacturer, { data: IManufacturer }>(`/manufacturers/${id}`, { data });
+const updateManufacture = (id: number, data: IBaseManufacturer): Promise<IManufacturer | null> => {
+  let response = APIClient.patch<IManufacturer, { data: IBaseManufacturer }>(`/manufacturers/${id}`, { data });
   return response;
 };
 
-const deleteManufacture = (id: number): Promise<IManufacturer | null> => {
+const deleteManufacturer = (id: number): Promise<IManufacturer | null> => {
   let response = APIClient.delete<IManufacturer>(`/manufacturers/${id}`);
+  return response;
+};
+
+const deleteManufacturers = (data: number[]): Promise<IManufacturer | null> => {
+  let response = APIClient.post<IManufacturer, { data:  number[] }>(`/manufacturers/deleteManufacturers`, { data });
   return response;
 };
 
@@ -31,6 +36,7 @@ const ManufacturerService = {
   getManufactureById,
   addManufacture,
   updateManufacture,
-  deleteManufacture,
+  deleteManufacturer,
+  deleteManufacturers
 };
 export default ManufacturerService;

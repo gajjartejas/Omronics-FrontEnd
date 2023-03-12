@@ -1,7 +1,7 @@
-import Constants from "./app-constant";
+import Constants from './app-constant';
 
 const Config = {
-	Constants,
+  Constants,
 };
 
 export default Config;

@@ -1,8 +1,12 @@
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { Button, CardActionArea, CardActions, CardContent, Stack, Typography } from '@mui/material';
+import { Button, CardActionArea, CardActions, CardContent, Container, Stack, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import Image from 'mui-image';
+import { UploadStatus } from 'pages/Admin/ManageProducts/AddProduct';
 import { ImageType } from 'react-images-uploading';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import ErrorIcon from '@mui/icons-material/Error';
+import LinkIcon from '@mui/icons-material/Link';
 
 interface Props {
   item?: ImageType | undefined;
@@ -11,10 +15,12 @@ interface Props {
   onClick: () => void;
   onReplace?: ((item: ImageType, index: number) => void) | undefined;
   onRemove?: ((item: ImageType, index: number) => void) | undefined;
+  status?: UploadStatus;
 }
 
 const ImageCard = (props: Props) => {
-  const { item, index, mode, onClick, onReplace, onRemove } = props;
+  //Const
+  const { item, index, mode, onClick, onReplace, onRemove, status } = props;
 
   return (
     <Card sx={{ maxWidth: 345, minWidth: 250, height: 220, mt: 2, mr: 2 }}>
@@ -39,12 +45,23 @@ const ImageCard = (props: Props) => {
 
       {mode === 'show_image' && (
         <CardActions>
-          <Button size="small" color="primary" onClick={() => onReplace!(item!, index!)}>
-            {'Replace'}
-          </Button>
+          {status === UploadStatus.PENDING && (
+            <Button size="small" color="primary" onClick={() => onReplace!(item!, index!)}>
+              {'Replace'}
+            </Button>
+          )}
           <Button size="small" color="primary" onClick={() => onRemove!(item!, index!)}>
             {'Delete'}
           </Button>
+          <Container style={{ flex: 1 }} />
+          {status === UploadStatus.UPLOADING && (
+            <Typography noWrap sx={{ fontSize: 12, flexGrow: 1, fontStyle: 'italic' }}>
+              {'Uploading...'}
+            </Typography>
+          )}
+          {status === UploadStatus.FINISH && <DoneAllIcon style={{ color: 'green', fontSize: 20 }} />}
+          {status === UploadStatus.ERROR && <ErrorIcon style={{ color: 'red', fontSize: 20 }} />}
+          {status === UploadStatus.REMOTE && <LinkIcon style={{ color: 'green', fontSize: 20 }} />}
         </CardActions>
       )}
     </Card>

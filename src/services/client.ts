@@ -21,16 +21,10 @@ const get = async <Type>(path: string, apiClient: AxiosInstance = appApiClient):
   console.log('---API CALL---');
   console.log('URL:', path);
   console.log('METHOD:GET');
-
-  try {
-    const config = {};
-    let rawResponse = await apiClient.get<IAPIBase>(path, config);
-    console.log('API RESPONSE:', path, rawResponse.data);
-
-    return rawResponse.data as Type;
-  } catch (err: any) {
-    return null;
-  }
+  const config = {};
+  let rawResponse = await apiClient.get<IAPIBase>(path, config);
+  console.log('API RESPONSE:', path, rawResponse.data);
+  return rawResponse.data as Type;
 };
 
 const post = async <Type, DataType>(
@@ -42,18 +36,10 @@ const post = async <Type, DataType>(
   console.log('URL:', path);
   console.log('METHOD:POST');
   console.log('FORM DATA:', formData);
-
-  try {
-    const config = {};
-    let rawResponse = await apiClient.post<IAPIBase>(path, formData, config);
-    console.log('API RESPONSE:', path, rawResponse.data);
-
-    return rawResponse as Type;
-  } catch (err: any) {
-    console.log('ERROR:', err);
-
-    return null;
-  }
+  const config = {};
+  let rawResponse = await apiClient.post<IAPIBase>(path, formData, config);
+  console.log('API RESPONSE:', path, rawResponse.data);
+  return rawResponse as Type;
 };
 
 const patch = async <Type, DataType>(
@@ -65,18 +51,10 @@ const patch = async <Type, DataType>(
   console.log('URL:', path);
   console.log('METHOD:PATCH');
   console.log('FORM DATA:', formData);
-
-  try {
-    const config = {};
-    let rawResponse = await apiClient.patch<IAPIBase>(path, formData, config);
-    console.log('API RESPONSE:', path, rawResponse.data);
-
-    return rawResponse as Type;
-  } catch (err: any) {
-    console.log('ERROR:', err);
-
-    return null;
-  }
+  const config = {};
+  let rawResponse = await apiClient.patch<IAPIBase>(path, formData, config);
+  console.log('API RESPONSE:', path, rawResponse.data);
+  return rawResponse as Type;
 };
 
 const deleteMethod = async <Type>(path: string, apiClient: AxiosInstance = appApiClient): Promise<Type | null> => {

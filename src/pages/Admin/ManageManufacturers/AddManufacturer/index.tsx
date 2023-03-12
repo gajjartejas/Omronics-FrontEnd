@@ -5,8 +5,7 @@ import 'react-dropdown-tree-select/dist/styles.css';
 import ManufacturerService from 'services/api-service/manufacturer';
 import { IBaseManufacturer, IManufacturer } from 'services/api-service/types';
 import '../../../../App.css';
-//@ts-ignore
-import { NotificationManager } from 'react-notifications';
+import { toast } from 'react-toastify';
 
 interface IAddManufacturer extends IManufacturer {
   children?: IManufacturer[];
@@ -19,8 +18,8 @@ interface IAddManufacturer extends IManufacturer {
 }
 
 function AddManufacturer() {
+  //State
   const [manufacturers, setManufacturers] = React.useState<IAddManufacturer[]>([]);
-
   const [name, setName] = React.useState<string>('');
   const [description, setDescription] = React.useState<string>('');
 
@@ -58,7 +57,7 @@ function AddManufacturer() {
 
   const onClickSave = async () => {
     if (!name || name.trim().length < 1) {
-      NotificationManager.error('Error', 'Manufacturer name is required!', 5000, () => {});
+      toast.error('Manufacturer name is required!');
       return;
     }
 
@@ -69,7 +68,7 @@ function AddManufacturer() {
 
     const result = await ManufacturerService.addManufacture(newManufacturer);
     if (result) {
-      NotificationManager.success('Manufacturer saved successfully!');
+      toast.success('Manufacturer saved successfully!');
       getManufacturers();
       clearForm();
     }

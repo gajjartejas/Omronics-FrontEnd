@@ -8,6 +8,7 @@ import AppAdminNavbar from './AppAdminNavbar';
 import MultipleSelectChip from './MultipleSelectChip';
 import ImageCard from './ImageCard';
 import ResourcesCard from './ResourcesCard';
+import AppAlertDialog from './AppAlertDialog';
 
 const Components = {
   AppNavbar,
@@ -20,6 +21,7 @@ const Components = {
   MultipleSelectChip,
   ImageCard,
   ResourcesCard,
+  AppAlertDialog,
 };
 
 export default Components;
