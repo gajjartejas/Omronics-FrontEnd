@@ -117,14 +117,14 @@ const Constant = {
       ],
     },
     {
-      id: 0,
+      id: 3,
       title: 'Others',
       items: [
         {
           id: 0,
           title: 'Logout',
-          icon: 'power_off'
-        }
+          icon: 'power_off',
+        },
       ],
     },
   ],
