@@ -3,6 +3,9 @@ App constants
  */
 
 const Constant = {
+  IMAGE_PATH: 'https://api.omronics.com/media/images/',
+  FILE_PATH: 'https://api.omronics.com/media/resources/',
+  CATEGORY_IMAGE_PATH: 'https://api.omronics.com/media/categories/',
   HOME_MENU_OPTIONS: [
     { id: 0, name: 'Home' },
     { id: 1, name: 'Products & Brands' },
@@ -36,59 +39,80 @@ const Constant = {
           id: 0,
           title: 'Dashboard',
           route: '/admin/dashboard',
+          icon: 'dashboard',
         },
       ],
     },
     {
-      id: 0,
+      id: 1,
       title: 'Manage',
       items: [
         {
           id: 0,
           title: 'Products',
           route: '/admin/dashboard/products',
+          icon: 'shopping_cart',
+        },
+        {
+          id: 1,
+          title: 'Product Images',
+          route: '/admin/dashboard/images',
+          icon: 'photo_library',
         },
         {
           id: 2,
-          title: 'Images',
-          route: '/admin/dashboard/images',
+          title: 'Product Resources',
+          route: '/admin/dashboard/resources',
+          icon: 'description',
         },
         {
           id: 3,
-          title: 'Resources',
-          route: '/admin/dashboard/resources',
+          title: 'Manufacturers',
+          route: '/admin/dashboard/manufacturers',
+          icon: 'business',
         },
         {
           id: 4,
-          title: 'Manufacturers',
-          route: '/admin/dashboard/manufacturers',
-        },
-        {
-          id: 5,
           title: 'Categories',
           route: '/admin/dashboard/categories',
+          icon: 'category',
         },
       ],
     },
     {
-      id: 0,
+      id: 2,
       title: 'Pages',
       items: [
         {
           id: 0,
           title: 'Home',
+          icon: 'home',
+        },
+        {
+          id: 1,
+          title: 'Products & Brands',
+          icon: 'shopping_cart',
         },
         {
           id: 2,
-          title: 'Products & Brands',
+          title: 'About US',
+          icon: 'verified_user',
         },
         {
           id: 3,
-          title: 'About US',
-        },
-        {
-          id: 4,
           title: 'Contact US',
+          icon: 'verified_user',
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Others',
+      items: [
+        {
+          id: 0,
+          title: 'Logout',
+          icon: 'power_off',
         },
       ],
     },

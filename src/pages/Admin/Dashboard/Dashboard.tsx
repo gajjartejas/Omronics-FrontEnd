@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+
 function Dashboard() {
   return <div></div>;
 }

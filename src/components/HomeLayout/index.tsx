@@ -5,6 +5,7 @@ import Config from '../../config';
 import AppNavbar from '../AppNavbar';
 
 const HomeLayout = () => {
+  //Const
   const account = useSelector(selectAccount);
   const outlet = useOutlet();
 

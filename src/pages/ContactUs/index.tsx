@@ -2,26 +2,87 @@ import { Status, Wrapper } from '@googlemaps/react-wrapper';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import '../../App.css';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { IBaseCategory, IBaseContactData } from '../../services/api-service/types';
+import ContactDataService from '../../services/api-service/contact-data';
 
 function ContactUs() {
+  //State
+  const [name, setName] = useState('');
+  const [phoneNo, setPhoneNo] = useState('');
+  const [email, setEmail] = useState('');
+  const [requirements, setRequirements] = useState('');
+
   const render = (status: Status) => {
     return <h1>{status}</h1>;
+  };
+
+  const onClickSave = async () => {
+    if (!name || name.trim().length < 1) {
+      toast.error('Your name is required!');
+      return;
+    }
+
+    if (!phoneNo || phoneNo.trim().length < 1) {
+      toast.error('Phone number is required!');
+      return;
+    }
+    if (phoneNo && phoneNo.length > 20) {
+      toast.error('Invalid phone number.');
+      return;
+    }
+
+    if (!email || email.trim().length < 1) {
+      toast.error('Email is required!');
+      return;
+    }
+    if (email && email.length > 100) {
+      toast.error('Invalid email address.');
+      return;
+    }
+
+    if (!requirements || requirements.length < 1) {
+      toast.error('Requirement is required.');
+      return;
+    }
+
+    if (requirements && requirements.length > 2000) {
+      toast.error('Requirement length should not exceed 2000 characters.');
+      return;
+    }
+
+    const newCategory: IBaseContactData = {
+      name: name,
+      phoneNo: phoneNo,
+      email: email,
+      requirements: requirements,
+    };
+
+    const result = await ContactDataService.addContactData(newCategory);
+    if (result) {
+      toast.success('Thank you for your inquiry. We have received it and our team will be in touch with you soon.');
+      clearForm();
+    }
+  };
+
+  const clearForm = () => {
+    setName('');
+    setPhoneNo('');
+    setEmail('');
+    setRequirements('');
   };
 
   return (
     <Wrapper render={render} apiKey={''}>
       <Box sx={{ pt: 8 }}>
-        {/* <Components.GoogleMap options={{ center: center, zoom: zoom }} style={{ height: '400px', width: '100%' }}>
-          <Components.MapMarker position={center} />
-        </Components.GoogleMap> */}
-
         <div style={{ width: '100%' }}>
           <iframe
             title="map"
             width="100%"
             height="300"
             scrolling="no"
-            src="https://maps.google.com/maps?width=100%25&amp;height=300&amp;hl=en&amp;q=Omronics%20Automation,%2037,%20fortune%20industrial%20park,%20kathwada%20singarava%20road%20%20kathwada%20Ahmedabad%20gujarat%20382430+(Omronics%20Automation)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+            src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Omronics%20automation,%20Kathwada-Singarva%20Road,%20Odhav%20Industrial%20Estate,%20Kathwada,%20Gujarat+(Omronics%20automation)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
             <a href="https://www.maps.ie/distance-area-calculator.html">distance maps</a>
           </iframe>
         </div>
@@ -34,7 +95,9 @@ function ContactUs() {
                 {'HEAD QUARTER'}
               </Typography>
               <Typography sx={{ whiteSpace: 'pre-wrap', color: '#181818', fontSize: 14 }}>
-                {'37, fortune industrial park,\nKathwada Singarava road,\nKathwada Ahmedaba,\nGujarat 382430'}
+                {
+                  'Shed No-57,\nRadhekrishna Industrial Estate,\nNear Adarsh Estate Road No-5,\nKathwada GIDC Ahmedabad,\nGujarat 382430'
+                }
               </Typography>
 
               <Typography sx={{ color: '#181818', fontSize: 14, fontWeight: '700' }}>
@@ -86,11 +149,41 @@ function ContactUs() {
               <Typography sx={{ color: '#181818', fontSize: 16 }}>
                 {'Please enter the following details, and we’ll get back to you soon. All fields are required.'}
               </Typography>
-              <TextField sx={{ mt: 2 }} required fullWidth label="Name" />
-              <TextField sx={{ mt: 2 }} required fullWidth label="Mobile NO." />
-              <TextField sx={{ mt: 2 }} required fullWidth label="Email Address" />
-              <TextField sx={{ mt: 2 }} required fullWidth label="Requirements" multiline rows={4} />
-              <Button sx={{ mt: 2 }} variant="contained">
+              <TextField
+                value={name}
+                sx={{ mt: 2 }}
+                onChange={event => setName(event.target.value)}
+                required
+                fullWidth
+                label="Name"
+              />
+              <TextField
+                value={phoneNo}
+                sx={{ mt: 2 }}
+                onChange={event => setPhoneNo(event.target.value)}
+                required
+                fullWidth
+                label="Mobile NO."
+              />
+              <TextField
+                value={email}
+                onChange={event => setEmail(event.target.value)}
+                sx={{ mt: 2 }}
+                required
+                fullWidth
+                label="Email Address"
+              />
+              <TextField
+                value={requirements}
+                onChange={event => setRequirements(event.target.value)}
+                sx={{ mt: 2 }}
+                required
+                fullWidth
+                label="Requirements"
+                multiline
+                rows={4}
+              />
+              <Button onClick={onClickSave} sx={{ mt: 2 }} variant="contained">
                 {'SEND MESSAGE'}
               </Button>
             </Grid2>
