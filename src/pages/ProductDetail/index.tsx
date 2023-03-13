@@ -4,7 +4,7 @@ import React from 'react';
 import ProductService from '../../services/api-service/product';
 import Config from '../../config';
 import { toast } from 'react-toastify';
-import { Box, Button, Container } from '@mui/material';
+import { Box, Button, Chip, CircularProgress, Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import Image from 'mui-image';
@@ -38,13 +38,14 @@ function ProductDetail() {
   //Const
   const query = useQuery();
   const productId = query.get('id');
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   //State
   const [name, setName] = React.useState<string>('');
   const [description, setDescription] = React.useState<string>('');
   const [partNumber, setPartNumber] = React.useState('');
   const [modelNumber, setModelNumber] = React.useState('');
+  const [manufacturer, setManufacturer] = React.useState('');
   const [images, setImages] = React.useState<IProductImage[]>([]);
   const [files, setFiles] = React.useState<IProductResources[]>([]);
   const [categories, setCategories] = React.useState<IProductCategory[]>([]);
@@ -74,7 +75,7 @@ function ProductDetail() {
         setModelNumber(productInfo?.modelNumber ?? '');
 
         //Manufacturer
-        console.log('productInfo.categories', productInfo.categories);
+        setManufacturer(productInfo.manufacturer?.name ? productInfo.manufacturer?.name : 'N/A');
 
         //Categories
         let pCategories = productInfo.categories.map(v => {
@@ -152,8 +153,13 @@ function ProductDetail() {
                 <Typography sx={{ mt: 2, fontSize: 20 }}>{description}</Typography>
 
                 <div style={{ display: 'flex' }}>
-                  <Typography sx={{ mt: 2, fontSize: 20 }}>{'Part Number: '}</Typography>
+                  <Typography sx={{ mt: 2, fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Part Number: '}</Typography>
                   <Typography sx={{ mt: 2, fontSize: 20 }}>{partNumber}</Typography>
+                </div>
+
+                <div style={{ display: 'flex' }}>
+                  <Typography sx={{ mt: 2, fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Manufacturer: '}</Typography>
+                  <Typography sx={{ mt: 2, fontSize: 20 }}>{manufacturer}</Typography>
                 </div>
 
                 <div style={{ display: 'flex' }}>
@@ -161,18 +167,18 @@ function ProductDetail() {
                   <Typography sx={{ mt: 2, fontSize: 20 }}>{modelNumber}</Typography>
                 </div>
 
-                <div style={{ display: 'flex' }}>
-                  <Typography sx={{ mt: 2, fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Categories: '}</Typography>
-                  {categories.map(v => {
-                    return (
-                      <Typography key={v.id.toString()} sx={{ mt: 2, fontSize: 20 }}>
-                        {v.name}
-                      </Typography>
-                    );
-                  })}
-                </div>
-                <Typography sx={{ mt: 2, mb: 2, fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Resources: '}</Typography>
+                <Box sx={{ mt: 2 }}>
+                  <div style={{ display: 'flex' }}>
+                    <Typography sx={{ fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Categories: '}</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {categories.map(v => {
+                        return <Chip key={v.id.toString()} label={v.name} />;
+                      })}
+                    </Box>
+                  </div>
+                </Box>
 
+                <Typography sx={{ mt: 2, mb: 2, fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Resources: '}</Typography>
                 <div style={{ display: 'flex' }}>
                   {files.map((item, index) => {
                     return (
@@ -198,6 +204,12 @@ function ProductDetail() {
                 </div>
               </Grid2>
             </Grid2>
+          )}
+
+          {loading && !error && (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: height * 0.6 }}>
+              <CircularProgress />
+            </Box>
           )}
 
           {!loading && error && (

@@ -21,6 +21,7 @@ import { bindHover, usePopupState } from 'material-ui-popup-state/hooks';
 import Image from 'mui-image';
 import AppNavbarPopover from '../AppNavbarPopover';
 import { useNavigate } from 'react-router-dom';
+import Config from "../../config";
 
 interface Props {
   items: { id: number; name: string }[];
@@ -94,7 +95,7 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
             <MenuIcon />
           </IconButton>
           <Box component="div" sx={{ ml: 10, color: '#000', flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
-            <Image src={require('../../assets/svg/navbar-logo.svg').default} width={120} />
+            <Image src={Config.Images.svgs.app_icon.default} width={120} />
           </Box>
 
           <Stack direction="row" spacing={3} sx={{ mr: 10, display: { xs: 'none', sm: 'block' } }}>

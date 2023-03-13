@@ -1,4 +1,4 @@
-import { Grid, Box, Container } from '@mui/material';
+import { Grid, Box, Container, CircularProgress } from '@mui/material';
 import '../../App.css';
 import Components from '../../components';
 import Typography from '@mui/material/Typography';
@@ -7,18 +7,16 @@ import { ICategory } from '../../services/api-service/types';
 import React, { useCallback, useEffect, useRef } from 'react';
 import useQuery from '../../hooks/useQuery';
 import { useNavigate } from 'react-router';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
+import Config from '../../config';
 
 interface IAddCategory extends ICategory {
   children?: IAddCategory[];
-  label: string;
-  value: string;
-  checked: boolean;
-  disabled: boolean;
-  expanded: boolean;
-  selected: boolean;
+  name: string;
+  imageUrl: string | null;
 }
 
-function ProductList() {
+function Categories() {
   //Refs
   const refCategories = useRef<IAddCategory[]>([]);
 
@@ -26,9 +24,11 @@ function ProductList() {
   const navigate = useNavigate();
   const query = useQuery();
   const categoryId = query.get('id');
+  const { height } = useWindowDimensions();
 
   //State
   const [categories, setCategories] = React.useState<IAddCategory[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   const getCategories = useCallback(async () => {
     let categories: ICategory[] | null = null;
@@ -38,10 +38,20 @@ function ProductList() {
     } else {
       categories = await CategoryService.getCategories();
     }
+    setLoading(false);
 
     const hashTable = Object.create(null);
     categories?.forEach(
-      aData => (hashTable[aData.id] = { ...aData, label: aData.name, value: aData.name, children: [] }),
+      aData =>
+        (hashTable[aData.id] = {
+          ...aData,
+          name: aData.name,
+          imageUrl:
+            aData.images && aData.images.length > 0 && aData.images[0].url
+              ? Config.Constants.CATEGORY_IMAGE_PATH + aData.images[0].url
+              : null,
+          children: [],
+        }),
     );
     const dataTree: IAddCategory[] = [];
     categories?.forEach(aData => {
@@ -56,7 +66,6 @@ function ProductList() {
       //Go to product page
       navigate(`/products?categoryId=${categoryId}`, { replace: true });
     } else {
-      console.log('tree', dataTree);
       setCategories(dataTree!);
       refCategories.current = [...dataTree];
     }
@@ -78,27 +87,33 @@ function ProductList() {
           <Typography sx={{ mt: 8 }} variant="h4">
             {'Categories'}
           </Typography>
-          <Grid container sx={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+          {!loading && (
             <Grid container sx={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-              <Grid container spacing={0} sx={{}}>
-                {categories.map((item, index) => (
-                  <Components.ProductCard
-                    key={item.id}
-                    index={index}
-                    title={item.name}
-                    description={item.description || ''}
-                    image="https://cdn.shopify.com/s/files/1/0068/3235/7429/files/PLC_in_Automation_Equipment_large.png?v=1590164660"
-                    onPress={onPressCard}
-                  />
-                ))}
+              <Grid container sx={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                <Grid container spacing={0} sx={{}}>
+                  {categories.map((item, index) => (
+                    <Components.ProductCard
+                      key={item.id}
+                      index={index}
+                      title={item.name}
+                      description={item.description || ''}
+                      image={item.imageUrl}
+                      onPress={onPressCard}
+                    />
+                  ))}
+                </Grid>
               </Grid>
             </Grid>
-            {/*<Pagination count={10} size="large" />*/}
-          </Grid>
+          )}
+          {loading && (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: height * 0.6 }}>
+              <CircularProgress />
+            </Box>
+          )}
         </Container>
       </Box>
     </div>
   );
 }
 
-export default ProductList;
+export default Categories;

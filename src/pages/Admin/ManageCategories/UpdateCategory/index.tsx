@@ -56,7 +56,6 @@ function UpdateCategory() {
       }
 
       const numId = Number(categoryId);
-      selectedCategoryId.current = numId;
       const category = await CategoryService.getCategoryById(numId);
 
       if (!category) {
@@ -113,19 +112,14 @@ function UpdateCategory() {
   };
 
   const onChange = (currentNode: any, selectedNodes: any) => {
-    console.log('onChange::', selectedNodes);
     if (selectedNodes && selectedNodes.length > 0) {
       selectedCategoryId.current = selectedNodes[0].id;
     }
   };
 
-  const onAction = (node: any, action: any) => {
-    console.log('onAction::', action, node);
-  };
+  const onAction = (node: any, action: any) => {};
 
-  const onNodeToggle = (currentNode: any) => {
-    console.log('onNodeToggle::', currentNode);
-  };
+  const onNodeToggle = (currentNode: any) => {};
 
   const onClickSave = async () => {
     if (!name || name.trim().length < 1) {

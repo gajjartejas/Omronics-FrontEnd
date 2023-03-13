@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import useWindowDimensions from '../../hooks/useWindowDimensions';
+import Image from 'mui-image';
+import Config from '../../config';
 
 interface IProps {
-  image?: string | undefined;
+  image: string | null;
   title: string;
   description: string;
   index: number;
@@ -30,7 +30,7 @@ const ProductCard: React.FC<IProps> = (props: IProps) => {
         my: 2,
       }}>
       <CardActionArea>
-        <CardMedia component="img" height="180" image={image} alt="green iguana" />
+        <Image height="180" src={image ? image : Config.Images.svgs.image_placeholder.default} alt="green iguana" />
         <CardContent>
           <Typography
             sx={{
@@ -44,7 +44,16 @@ const ProductCard: React.FC<IProps> = (props: IProps) => {
             component="div">
             {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            sx={{
+              fontSize: 14,
+              display: '-webkit-box',
+              overflow: 'hidden',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 3,
+            }}
+            variant="body2"
+            color="text.secondary">
             {description}
           </Typography>
         </CardContent>
