@@ -77,6 +77,12 @@ const Constant = {
           route: '/admin/dashboard/categories',
           icon: 'category',
         },
+        {
+          id: 5,
+          title: 'Recently Connected',
+          route: '/admin/dashboard/contact-data',
+          icon: 'phone-missed',
+        },
       ],
     },
     {

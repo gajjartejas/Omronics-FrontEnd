@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import "react-toastify/dist/ReactToastify.css";
+import React, { FC } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer } from 'react-toastify';
 
@@ -30,13 +30,15 @@ import ManufacturerList from 'pages/Admin/ManageManufacturers/ManufacturerList';
 import ManageResourceList from 'pages/Admin/ManageResources/ManageResourcesList';
 import AuthLayout from './components/AuthLayout';
 import ManageImageList from './pages/Admin/ManageImages/ManageImageList';
-import AddManufacturerList from "./pages/Admin/ManageManufacturers/AddManufacturer";
+import AddManufacturerList from './pages/Admin/ManageManufacturers/AddManufacturer';
 import AddProduct from './pages/Admin/ManageProducts/AddProduct';
 import ManageProductList from './pages/Admin/ManageProducts/ManageProductList';
-import UpdateCategory from "./pages/Admin/ManageCategories/UpdateCategory";
-import UpdateManufacturer from "./pages/Admin/ManageManufacturers/UpdateManufacturer";
-import UpdateProduct from "./pages/Admin/ManageProducts/UpdateProduct";
-import Categories from "./pages/Categories";
+import UpdateCategory from './pages/Admin/ManageCategories/UpdateCategory';
+import UpdateManufacturer from './pages/Admin/ManageManufacturers/UpdateManufacturer';
+import UpdateProduct from './pages/Admin/ManageProducts/UpdateProduct';
+import Categories from './pages/Categories';
+import ContactDataList from './pages/Admin/ManageContactData/ContactDataList';
+import ViewContactData from 'pages/Admin/ManageContactData/ViewContactData';
 
 //TODO - move this to separate theme file
 const theme = createTheme({
@@ -115,6 +117,9 @@ const App: FC = () => {
             <Route path="dashboard/categories" element={<ManageCategoryList />} />
             <Route path="dashboard/add-category" element={<AddCategory />} />
             <Route path="dashboard/update-category" element={<UpdateCategory />} />
+
+            <Route path="dashboard/contact-data" element={<ContactDataList />} />
+            <Route path="dashboard/view-contact-data" element={<ViewContactData />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
