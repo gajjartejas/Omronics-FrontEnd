@@ -1,4 +1,4 @@
-import { Button, Container, Grid, TextField, Typography } from '@mui/material';
+import { Button, Container, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import MarkdownIt from 'markdown-it';
 import React, { useEffect, useRef } from 'react';
@@ -7,26 +7,25 @@ import Components from 'components';
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading';
 import 'react-markdown-editor-lite/lib/index.css';
 import { useFilePicker } from 'use-file-picker';
-import CategoryService from 'services/api-service/category';
+import CategoryService from '../../../../services/api-service/category/category';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
-import {
-  IBaseConnectId,
-  IBaseProduct,
-  IBaseProductResource,
-  ICategory,
-  IManufacturer,
-} from 'services/api-service/types';
-import ManufacturerService from 'services/api-service/manufacturer';
-import ProductService from 'services/api-service/product';
+import ManufacturerService from '../../../../services/api-service/manufacturer/manufacturer';
+import ProductService from '../../../../services/api-service/product/product';
 import PQueue from 'p-queue';
 import FileUploader, { FileUploaderResult } from 'services/file-uploader';
 import { toast } from 'react-toastify';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
-import ProductImageService from '../../../../services/api-service/product-image';
-import ProductResourceService from '../../../../services/api-service/product-resource';
+import ProductImageService from '../../../../services/api-service/product/product-image';
+import ProductResourceService from '../../../../services/api-service/product-resource/product-resource';
 import { useNavigate } from 'react-router';
 import AppHelpers from '../../../../helpers';
+import { ICategory } from '../../../../services/api-service/category/types';
+import { IManufacturer } from '../../../../services/api-service/manufacturer/types';
+import { IBaseConnectId } from '../../../../services/api-service/types';
+import { IBaseProductResource } from '../../../../services/api-service/product-resource/types';
+import { IBaseProduct } from '../../../../services/api-service/product/types';
+import Checkbox from '@mui/material/Checkbox';
 
 const MAX_IMAGE_UPLOAD = 50;
 const MAX_FILE_UPLOAD = 50;
@@ -95,6 +94,8 @@ function AddProduct() {
   const [name, setName] = React.useState<string>('');
   const [description, setDescription] = React.useState<string>('');
   const [isProductCreating, setIsProductCreating] = React.useState<boolean>(false);
+  const [isFeatured, setIsFeatured] = React.useState<boolean>(false);
+  const [isActive, setIsActive] = React.useState<boolean>(true);
 
   //Other
   const [openFileSelector, { plainFiles }] = useFilePicker({
@@ -328,6 +329,8 @@ function AddProduct() {
       images: { create: imagesToCreate },
       resourcees: { create: resourceesToCreate },
       manufacturer: { connect: selectedManufacturerId.current },
+      featured: isFeatured,
+      active: isActive,
     };
 
     setIsProductCreating(true);
@@ -340,25 +343,6 @@ function AddProduct() {
     } catch (e) {
       toast.error(JSON.stringify(e));
     }
-  };
-
-  const clearForm = () => {
-    setName('');
-    setDescription('');
-    setImages([]);
-    setFiles([]);
-    setCategories([]);
-    setManufacturers([]);
-    setPartNumber('');
-    setModelNumber('');
-
-    let newCategories = [...categories];
-    newCategories.forEach(v => (v.selected = false));
-    setCategories(newCategories);
-
-    let newManufacturers = [...manufacturers];
-    newManufacturers.forEach(v => (v.selected = false));
-    setManufacturers(newManufacturers);
   };
 
   const onClickUploadImage = () => {
@@ -483,6 +467,14 @@ function AddProduct() {
     }
   };
 
+  const handleChangeFeaturedCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFeatured(event.target.checked);
+  };
+
+  const handleChangeActiveCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsActive(event.target.checked);
+  };
+
   return (
     <div>
       <Container sx={{}}>
@@ -536,6 +528,16 @@ function AddProduct() {
               onNodeToggle={onNodeToggleCategoriesTreeSelect}
               mode={'hierarchical'}
             />
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox onChange={handleChangeFeaturedCheckbox} checked={isFeatured} />}
+                label="Featured Product"
+              />
+              <FormControlLabel
+                control={<Checkbox onChange={handleChangeActiveCheckbox} checked={isActive} />}
+                label="Active Product"
+              />
+            </FormGroup>
             <Typography sx={{ mt: 2, mb: 1, fontSize: 16, fontWeight: 400 }}>{'Images'}</Typography>
             <ImageUploading multiple value={images} onChange={onChangeImage} maxNumber={MAX_IMAGE_UPLOAD}>
               {({ imageList, onImageUpload, onImageUpdate, onImageRemove, errors }) => (

@@ -2,7 +2,7 @@ import { Container, FormControl, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import 'react-dropdown-tree-select/dist/styles.css';
-import ContactDataService from 'services/api-service/contact-data';
+import ContactDataService from '../../../../services/api-service/contact-data/contact-data';
 import '../../../../App.css';
 import useQuery from 'hooks/useQuery';
 

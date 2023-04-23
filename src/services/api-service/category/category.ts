@@ -1,44 +1,36 @@
-import APIClient from 'services/client';
+import APIClient from '../../client';
 import { IBaseCategory, ICategory } from './types';
 
 const getCategories = (): Promise<ICategory[] | null> => {
-  let response = APIClient.get<ICategory[]>('/categories');
-  return response;
+  return APIClient.get<ICategory[]>('/categories');
 };
 
 const getCategoryById = (id: number): Promise<ICategory | null> => {
-  let response = APIClient.get<ICategory>(`/categories/${id}`);
-  return response;
+  return APIClient.get<ICategory>(`/categories/${id}`);
 };
 
 const getChildCategoriesById = (id: number): Promise<ICategory[] | null> => {
-  let response = APIClient.get<ICategory[]>(`/categories/children/${id}`);
-  return response;
+  return APIClient.get<ICategory[]>(`/categories/children/${id}`);
 };
 
 const getProductsByCategoryId = (id: number): Promise<ICategory | null> => {
-  let response = APIClient.get<ICategory>(`/categories/${id}/products`);
-  return response;
+  return APIClient.get<ICategory>(`/categories/${id}/products`);
 };
 
 const addCategory = (data: IBaseCategory): Promise<ICategory | null> => {
-  let response = APIClient.post<ICategory, { data: IBaseCategory }>(`/categories`, { data });
-  return response;
+  return APIClient.post<ICategory, { data: IBaseCategory }>(`/categories`, { data });
 };
 
 const updateCategory = (id: number, data: IBaseCategory): Promise<ICategory | null> => {
-  let response = APIClient.patch<ICategory, { data: IBaseCategory }>(`/categories/${id}`, { data });
-  return response;
+  return APIClient.patch<ICategory, { data: IBaseCategory }>(`/categories/${id}`, { data });
 };
 
 const deleteCategory = (id: number): Promise<ICategory | null> => {
-  let response = APIClient.delete<ICategory>(`/categories/${id}`);
-  return response;
+  return APIClient.delete<ICategory>(`/categories/${id}`);
 };
 
 const deleteCategories = (data: number[]): Promise<ICategory | null> => {
-  let response = APIClient.post<ICategory, { data: number[] }>(`/categories/deleteCategories`, { data });
-  return response;
+  return APIClient.post<ICategory, { data: number[] }>(`/categories/deleteCategories`, { data });
 };
 
 const CategoryService = {

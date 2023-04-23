@@ -1,14 +1,12 @@
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useRef } from 'react';
-import CategoryService from 'services/api-service/category';
-import { IBaseCategory, ICategory } from 'services/api-service/types';
+import CategoryService from '../../../../services/api-service/category/category';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 import '../../../../App.css';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
-
 import { toast } from 'react-toastify';
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading';
 import Components from '../../../../components';
@@ -16,7 +14,8 @@ import { UploadStatus } from '../../ManageProducts/AddProduct';
 import FileUploader, { FileUploaderResult } from '../../../../services/file-uploader';
 import PQueue from 'p-queue';
 import AppHelpers from '../../../../helpers';
-import CategoryImageService from '../../../../services/api-service/category-image';
+import CategoryImageService from '../../../../services/api-service/category-image.ts/category-image';
+import { IBaseCategory, ICategory } from '../../../../services/api-service/category/types';
 
 interface IAddCategory extends ICategory {
   children?: ICategory[];
@@ -102,6 +101,8 @@ function AddCategory() {
       description: description,
       parentId: selectedCategoryId,
       images: { create: imagesToCreate },
+      featured: false,
+      active: true,
     };
 
     const result = await CategoryService.addCategory(newCategory);

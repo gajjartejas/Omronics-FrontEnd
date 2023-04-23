@@ -1,7 +1,7 @@
 import '../../App.css';
 import useQuery from '../../hooks/useQuery';
 import React from 'react';
-import ProductService from '../../services/api-service/product';
+import ProductService from '../../services/api-service/product/product';
 import Config from '../../config';
 import { toast } from 'react-toastify';
 import { Box, Button, Chip, CircularProgress, Container } from '@mui/material';

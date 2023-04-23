@@ -25,7 +25,7 @@ const Transition = React.forwardRef(function Transition(
   },
   ref: React.Ref<unknown>,
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} children={props.children} />;
 });
 
 const AppAlertDialog = (props: IAppAlertDialogProps) => {

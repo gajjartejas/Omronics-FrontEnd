@@ -5,10 +5,10 @@ import useWindowDimensions from '../../hooks/useWindowDimensions';
 import useQuery from '../../hooks/useQuery';
 import Typography from '@mui/material/Typography';
 import React, { useCallback, useEffect } from 'react';
-import CategoryService from '../../services/api-service/category';
-import { ICategory } from '../../services/api-service/types';
+import CategoryService from '../../services/api-service/category/category';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { ICategory } from '../../services/api-service/category/types';
 
 function ProductList() {
   //Const

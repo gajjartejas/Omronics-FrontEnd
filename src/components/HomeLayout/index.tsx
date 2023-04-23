@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useOutlet } from 'react-router-dom';
 import Config from '../../config';
 import AppNavbar from '../AppNavbar';
+import AppFooter from '../AppFooter';
 
 const HomeLayout = () => {
   //Const
@@ -15,6 +16,7 @@ const HomeLayout = () => {
     <div>
       <AppNavbar items={Config.Constants.HOME_MENU_OPTIONS} />
       {outlet}
+      <AppFooter />
     </div>
   );
 };

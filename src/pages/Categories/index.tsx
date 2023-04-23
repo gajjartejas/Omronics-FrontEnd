@@ -2,13 +2,13 @@ import { Grid, Box, Container, CircularProgress } from '@mui/material';
 import '../../App.css';
 import Components from '../../components';
 import Typography from '@mui/material/Typography';
-import CategoryService from '../../services/api-service/category';
-import { ICategory } from '../../services/api-service/types';
+import CategoryService from '../../services/api-service/category/category';
 import React, { useCallback, useEffect, useRef } from 'react';
 import useQuery from '../../hooks/useQuery';
 import { useNavigate } from 'react-router';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import Config from '../../config';
+import { ICategory } from '../../services/api-service/category/types';
 
 interface IAddCategory extends ICategory {
   children?: IAddCategory[];

@@ -1,8 +1,7 @@
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useRef } from 'react';
-import CategoryService from 'services/api-service/category';
-import { IBaseCategory, ICategory } from 'services/api-service/types';
+import CategoryService from '../../../../services/api-service/category/category';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 import '../../../../App.css';
@@ -18,8 +17,9 @@ import FileUploader, { FileUploaderResult } from '../../../../services/file-uplo
 import AppHelpers from '../../../../helpers';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
-import CategoryImageService from '../../../../services/api-service/category-image';
+import CategoryImageService from '../../../../services/api-service/category-image.ts/category-image';
 import useQuery from '../../../../hooks/useQuery';
+import { IBaseCategory, ICategory } from '../../../../services/api-service/category/types';
 
 const MAX_IMAGE_UPLOAD = 50;
 
@@ -138,6 +138,8 @@ function UpdateCategory() {
       description: description,
       parentId: selectedCategoryId.current,
       images: { create: imagesToCreate },
+      featured: false,
+      active: true,
     };
 
     const numId = Number(categoryId);

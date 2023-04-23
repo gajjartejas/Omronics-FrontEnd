@@ -2,7 +2,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const baseUrl = `${process.env.REACT_APP_API_URL}`;
-const authHeader = `${process.env.REACT_APP_API_HEADER}`;
+//const authHeader = `${process.env.REACT_APP_API_HEADER}`;
 
 export const appApiClient = axios.create({
   baseURL: baseUrl,

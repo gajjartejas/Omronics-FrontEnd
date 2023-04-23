@@ -21,7 +21,7 @@ import { bindHover, usePopupState } from 'material-ui-popup-state/hooks';
 import Image from 'mui-image';
 import AppNavbarPopover from '../AppNavbarPopover';
 import { useNavigate } from 'react-router-dom';
-import Config from "../../config";
+import Config from '../../config';
 
 interface Props {
   items: { id: number; name: string }[];

@@ -3,12 +3,12 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Avatar, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import ProductImageService from 'services/api-service/product-image';
+import ProductImageService from '../../../../services/api-service/product/product-image';
 import moment from 'moment';
 import useWindowDimensions from '../../../../hooks/useWindowDimensions';
-import { IProductImage } from '../../../../services/api-service/types';
 import Config from '../../../../config';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import { IProductImage } from '../../../../services/api-service/product/types';
 
 interface IRowProductImage extends IProductImage {
   productName: string;

@@ -6,7 +6,7 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate } from 'react-router';
 import moment from 'moment';
 import useWindowDimensions from 'hooks/useWindowDimensions';
-import ManufacturerService from 'services/api-service/manufacturer';
+import ManufacturerService from '../../../../services/api-service/manufacturer/manufacturer';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import { GridSelectionModel } from '@mui/x-data-grid/models/gridSelectionModel';
