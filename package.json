@@ -24,7 +24,7 @@
 		"firebase": "^9.14.0",
 		"jsonwebtoken": "^9.0.0",
 		"markdown-it": "^13.0.1",
-		"material-ui-popup-state": "^4.1.0",
+		"material-ui-popup-state": "^5.0.8",
 		"moment": "^2.29.4",
 		"mui-image": "^1.0.7",
 		"p-queue": "^7.3.0",

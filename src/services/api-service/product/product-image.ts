@@ -1,29 +1,24 @@
-import APIClient from 'services/client';
+import APIClient from '../../client';
 import { IProductImage } from './types';
 
 const getProductImages = (): Promise<IProductImage[] | null> => {
-  let response = APIClient.get<IProductImage[]>('/productImages');
-  return response;
+  return APIClient.get<IProductImage[]>('/productImages');
 };
 
 const getProductImageById = (id: number): Promise<IProductImage | null> => {
-  let response = APIClient.get<IProductImage>(`/productImages/${id}`);
-  return response;
+  return APIClient.get<IProductImage>(`/productImages/${id}`);
 };
 
 const addProductImage = (data: IProductImage): Promise<IProductImage | null> => {
-  let response = APIClient.post<IProductImage, { data: IProductImage }>(`/productImages`, { data });
-  return response;
+  return APIClient.post<IProductImage, { data: IProductImage }>(`/productImages`, { data });
 };
 
 const updateProductImage = (id: number, data: IProductImage): Promise<IProductImage | null> => {
-  let response = APIClient.patch<IProductImage, { data: IProductImage }>(`/productImages/${id}`, { data });
-  return response;
+  return APIClient.patch<IProductImage, { data: IProductImage }>(`/productImages/${id}`, { data });
 };
 
 const deleteProductImage = (id: number): Promise<IProductImage | null> => {
-  let response = APIClient.delete<IProductImage>(`/productImages/${id}`);
-  return response;
+  return APIClient.delete<IProductImage>(`/productImages/${id}`);
 };
 
 const ProductImageService = {
@@ -33,4 +28,5 @@ const ProductImageService = {
   updateProductImage,
   deleteProductImage,
 };
+
 export default ProductImageService;

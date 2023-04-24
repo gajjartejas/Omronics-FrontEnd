@@ -2,10 +2,10 @@ import { Button, Container, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import 'react-dropdown-tree-select/dist/styles.css';
-import ManufacturerService from 'services/api-service/manufacturer';
-import { IBaseManufacturer, IManufacturer } from 'services/api-service/types';
+import ManufacturerService from '../../../../services/api-service/manufacturer/manufacturer';
 import '../../../../App.css';
 import { toast } from 'react-toastify';
+import { IBaseManufacturer, IManufacturer } from '../../../../services/api-service/manufacturer/types';
 
 interface IAddManufacturer extends IManufacturer {
   children?: IManufacturer[];
@@ -64,6 +64,8 @@ function AddManufacturer() {
     const newManufacturer: IBaseManufacturer = {
       name: name,
       description: description,
+      featured: false,
+      active: true,
     };
 
     const result = await ManufacturerService.addManufacture(newManufacturer);

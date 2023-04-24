@@ -77,6 +77,12 @@ const Constant = {
           route: '/admin/dashboard/categories',
           icon: 'category',
         },
+        {
+          id: 5,
+          title: 'Recently Connected',
+          route: '/admin/dashboard/contact-data',
+          icon: 'phone-missed',
+        },
       ],
     },
     {
@@ -102,6 +108,17 @@ const Constant = {
           id: 3,
           title: 'Contact US',
           icon: 'verified_user',
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Others',
+      items: [
+        {
+          id: 0,
+          title: 'Logout',
+          icon: 'power_off',
         },
       ],
     },

@@ -6,15 +6,14 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate } from 'react-router';
 import moment from 'moment';
 import useWindowDimensions from 'hooks/useWindowDimensions';
-import ManufacturerService from '../../../../services/api-service/manufacturer/manufacturer';
+import ContactUsService from '../../../../services/api-service/contact-data/contact-data';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 import { GridSelectionModel } from '@mui/x-data-grid/models/gridSelectionModel';
 import { GridCallbackDetails } from '@mui/x-data-grid/models/api';
 import { toast } from 'react-toastify';
 import Components from '../../../../components';
-
-export default function ManufacturerList() {
+import VisibilityIcon from '@mui/icons-material/Visibility';
+export default function ContactDataList() {
   //Refs
 
   //Const
@@ -29,13 +28,25 @@ export default function ManufacturerList() {
     {
       field: 'name',
       headerName: 'Name',
+      width: 100,
+      editable: true,
+    },
+    {
+      field: 'phoneNo',
+      headerName: 'Phone No',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
       width: 300,
       editable: true,
     },
     {
-      field: 'description',
-      headerName: 'Description',
-      width: 500,
+      field: 'requirements',
+      headerName: 'Requirements',
+      width: 400,
       editable: true,
     },
     {
@@ -66,7 +77,7 @@ export default function ManufacturerList() {
             }}
             aria-label="delete"
             size="small">
-            <EditIcon fontSize="inherit" />
+            <VisibilityIcon fontSize="inherit" />
           </IconButton>
         );
       },
@@ -77,17 +88,13 @@ export default function ManufacturerList() {
   const [selectedIds, setSelectedIds] = React.useState<number[]>([]);
   const [deleting, setDeleting] = React.useState(false);
 
-  const onPressAddNewProductButton = () => {
-    navigate('/admin/dashboard/add-manufacturer');
-  };
-
   const onClickEdit = (params: any) => {
-    navigate(`/admin/dashboard/update-manufacturer?id=${params.id}`);
+    navigate(`/admin/dashboard/view-contact-data?id=${params.id}`);
   };
 
   React.useEffect(() => {
     (async () => {
-      const data = await ManufacturerService.getManufacturers();
+      const data = await ContactUsService.getContactDatum();
       setRows(data!);
     })();
   }, []);
@@ -100,7 +107,7 @@ export default function ManufacturerList() {
     setDeleteDialogVisible(false);
     try {
       setDeleting(true);
-      await ManufacturerService.deleteManufacturers(selectedIds);
+      await ContactUsService.deleteContactDatum(selectedIds);
       await reloadPage();
     } catch (e) {
       toast.error(JSON.stringify(e));
@@ -117,7 +124,7 @@ export default function ManufacturerList() {
     setDeleteDialogVisible(false);
     setSelectedIds([]);
 
-    const data = await ManufacturerService.getManufacturers();
+    const data = await ContactUsService.getContactDatum();
     setRows(data!);
   };
 
@@ -125,7 +132,7 @@ export default function ManufacturerList() {
     <div>
       <Grid2 sx={{ flex: 1, pt: 8, paddingX: 4 }} container spacing={0}>
         <Stack sx={{ flex: 1 }} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <Typography sx={{ mt: 2, mb: 1, fontSize: 24, fontWeight: '500' }}>{'Manufacturers'}</Typography>
+          <Typography sx={{ mt: 2, mb: 1, fontSize: 24, fontWeight: '500' }}>{'Recently Connected'}</Typography>
           <div>
             <Button
               disabled={selectedIds.length < 1 || deleting}
@@ -133,9 +140,6 @@ export default function ManufacturerList() {
               sx={{ mt: 2, marginRight: 2 }}
               variant="contained">
               {deleting ? 'PLEASE WAIT...' : `DELETE (${selectedIds.length})`}
-            </Button>
-            <Button onClick={onPressAddNewProductButton} sx={{ mt: 2 }} variant="contained">
-              {'ADD NEW MANUFACTURER'}
             </Button>
           </div>
         </Stack>
@@ -152,7 +156,7 @@ export default function ManufacturerList() {
         </Box>
       </Grid2>
       <Components.AppAlertDialog
-        body={`Are you sure you want to delete ${selectedIds.length} manufacturer?`}
+        body={`Are you sure you want to delete ${selectedIds.length} record?`}
         cancelButtonText={'Cancel'}
         confirmButtonText={'Delete'}
         isVisible={deleteDialogVisible}
@@ -160,7 +164,7 @@ export default function ManufacturerList() {
           setDeleteDialogVisible(false);
         }}
         onConfirm={onDelete}
-        title={'Delete Manufacturer?'}
+        title={'Delete record?'}
       />
     </div>
   );

@@ -4,8 +4,8 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import '../../App.css';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { IBaseCategory, IBaseContactData } from '../../services/api-service/types';
-import ContactDataService from '../../services/api-service/contact-data';
+import ContactDataService from '../../services/api-service/contact-data/contact-data';
+import { IBaseContactData } from '../../services/api-service/contact-data/types';
 
 function ContactUs() {
   //State

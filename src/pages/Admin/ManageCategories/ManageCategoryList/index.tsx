@@ -4,7 +4,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Avatar, Button, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate } from 'react-router';
-import CategoryService from 'services/api-service/category';
+import CategoryService from '../../../../services/api-service/category/category';
 import moment from 'moment';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 import IconButton from '@mui/material/IconButton';
