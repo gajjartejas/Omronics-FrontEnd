@@ -1,8 +1,7 @@
 import { Button, Container, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useRef } from 'react';
-import CategoryService from '../../../../services/api-service/category/category';
-import DropdownTreeSelect from 'react-dropdown-tree-select';
+import CoverImageService from '../../../../services/api-service/cover-image/cover-image';
 import 'react-dropdown-tree-select/dist/styles.css';
 import '../../../../App.css';
 // @ts-ignore
@@ -14,111 +13,55 @@ import { UploadStatus } from '../../ManageProducts/AddProduct';
 import FileUploader, { FileUploaderResult } from '../../../../services/file-uploader';
 import PQueue from 'p-queue';
 import AppHelpers from '../../../../helpers';
-import CategoryImageService from '../../../../services/api-service/category-image.ts/category-image';
-import { IBaseCategory, ICategory } from '../../../../services/api-service/category/types';
 import Checkbox from '@mui/material/Checkbox';
-
-interface IAddCategory extends ICategory {
-  children?: ICategory[];
-  label: string;
-  value: string;
-  checked: boolean;
-  disabled: boolean;
-  expanded: boolean;
-  selected: boolean;
-}
+import { IBaseCoverImage } from '../../../../services/api-service/cover-image/types';
 
 const MAX_IMAGE_UPLOAD = 1;
 
-function AddCategory() {
-  const selectedCategoryId = useRef<number | null>(null);
+function AddCoverImage() {
+  const selectedCoverImageId = useRef<number | null>(null);
 
   //Images
   const [images, setImages] = React.useState<ImageType[]>([]);
   const [isImageUploading, setIsImageUploading] = React.useState<boolean>(false);
 
   //Other
-  const [name, setName] = React.useState<string>('');
+  const [title, setTitle] = React.useState<string>('');
   const [description, setDescription] = React.useState<string>('');
-  const [categories, setCategories] = React.useState<IAddCategory[]>([]);
-  const [isFeatured, setIsFeatured] = React.useState<boolean>(false);
   const [isActive, setIsActive] = React.useState<boolean>(true);
 
-  React.useEffect(() => {
-    (async () => {
-      await getCategories();
-    })();
-  }, []);
-
   const clearForm = () => {
-    setName('');
+    setTitle('');
     setDescription('');
 
     setIsImageUploading(false);
     setImages([]);
-    selectedCategoryId.current = null;
+    selectedCoverImageId.current = null;
 
-    setIsFeatured(false);
     setIsActive(true);
-
-    let newCategories = [...categories];
-    newCategories.forEach(v => (v.selected = false));
-    setCategories(newCategories);
   };
-
-  const getCategories = async () => {
-    let categories = await CategoryService.getCategories();
-
-    const hashTable = Object.create(null);
-    categories?.forEach(
-      aData => (hashTable[aData.id] = { ...aData, label: aData.name, value: aData.name, children: [] }),
-    );
-
-    const dataTree: IAddCategory[] = [];
-    categories?.forEach(aData => {
-      if (aData.parentId) {
-        hashTable[aData.parentId].children.push(hashTable[aData.id]);
-      } else {
-        dataTree.push(hashTable[aData.id]);
-      }
-    });
-
-    setCategories(dataTree!);
-  };
-
-  const onChange = (currentNode: any, selectedNodes: any) => {
-    if (selectedNodes && selectedNodes.length > 0) {
-      selectedCategoryId.current = selectedNodes[0].id;
-    }
-  };
-
-  const onAction = (node: any, action: any) => {};
-
-  const onNodeToggle = (currentNode: any) => {};
 
   const onClickSave = async () => {
-    if (!name || name.trim().length < 1) {
-      toast.error('Category name is required!');
+    if (!title || title.trim().length < 1) {
+      toast.error('Title is required!');
       return;
     }
 
-    let imagesToCreate = images.map(v => {
-      return { url: v.remoteFileName as string };
-    });
+    if (!images || images.length < 1) {
+      toast.error('Cover image is required!');
+      return;
+    }
 
-    const newCategory: IBaseCategory = {
-      name: name,
+    const newCoverImage: IBaseCoverImage = {
+      title: title,
       description: description,
-      parentId: selectedCategoryId.current,
-      images: { create: imagesToCreate },
-      featured: isFeatured,
+      url: images[0].remoteFileName,
       active: isActive,
     };
 
-    const result = await CategoryService.addCategory(newCategory);
+    const result = await CoverImageService.addCoverImage(newCoverImage);
     if (result) {
-      toast.success('Category saved successfully!');
-      getCategories();
+      toast.success('Cover image saved successfully!');
       clearForm();
     }
   };
@@ -140,9 +83,9 @@ function AddCategory() {
     if (images[index].remoteFileName) {
       try {
         const productImageId = Number(item.id);
-        await CategoryImageService.deleteCategoryImage(productImageId);
+        await CoverImageService.deleteCoverImage(productImageId);
         await FileUploader.deleteFile<FileUploaderResult>('', new FormData(), {
-          p: 'categories',
+          p: 'cover-images',
           del: images[index].remoteFileName,
         });
         callback(index);
@@ -200,14 +143,10 @@ function AddCategory() {
       }
       const data = new FormData();
       data.append('file', image.file!);
-      const params = { p: 'categories' };
+      const params = { p: 'cover-images' };
       let promise = FileUploader.upload<FileUploaderResult>('', data, params, i);
       queue.add(() => promise);
     }
-  };
-
-  const handleChangeFeaturedCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsFeatured(event.target.checked);
   };
 
   const handleChangeActiveCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -219,10 +158,10 @@ function AddCategory() {
       <Container sx={{}}>
         <Grid2 sx={{ flex: 1, pt: 8, justifyContent: 'center' }} container spacing={2}>
           <Grid2 sx={{ ml: 0, flex: 1 }}>
-            <Typography sx={{ mt: 2, fontSize: 24, fontWeight: '500' }}>{'Add Category'}</Typography>
+            <Typography sx={{ mt: 2, fontSize: 24, fontWeight: '500' }}>{'Add Cover Image'}</Typography>
             <TextField
-              value={name}
-              onChange={event => setName(event.target.value)}
+              value={title}
+              onChange={event => setTitle(event.target.value)}
               sx={{ mt: 2 }}
               required
               fullWidth
@@ -232,23 +171,14 @@ function AddCategory() {
               value={description}
               onChange={event => setDescription(event.target.value)}
               sx={{ mt: 2 }}
-              fullWidth
+              id="outlined-multiline-static"
               label="Description"
-            />
-            <DropdownTreeSelect
-              className="mdl-demo"
-              texts={{ placeholder: 'Categories' }}
-              data={categories}
-              onChange={onChange}
-              onAction={onAction}
-              onNodeToggle={onNodeToggle}
-              mode={'radioSelect'}
+              multiline
+              fullWidth
+              rows={4}
+              defaultValue="Default Value"
             />
             <FormGroup>
-              <FormControlLabel
-                control={<Checkbox onChange={handleChangeFeaturedCheckbox} checked={isFeatured} />}
-                label="Featured"
-              />
               <FormControlLabel
                 control={<Checkbox onChange={handleChangeActiveCheckbox} checked={isActive} />}
                 label="Active"
@@ -276,6 +206,9 @@ function AddCategory() {
                   <Typography sx={{ mt: 2, mb: 1, fontSize: 16, fontWeight: 400, color: 'red' }}>
                     {AppHelpers.getReadableError(MAX_IMAGE_UPLOAD, errors)}
                   </Typography>
+                  <Typography sx={{ mt: 2, mb: 1, fontSize: 16, fontWeight: 400, color: 'black' }}>
+                    {'Note: Accept ration should be 3:1 to 4:1\n Ex: 1440x560, 1000X300 etc'}
+                  </Typography>
                 </>
               )}
             </ImageUploading>
@@ -292,4 +225,4 @@ function AddCategory() {
   );
 }
 
-export default AddCategory;
+export default AddCoverImage;

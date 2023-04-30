@@ -39,6 +39,9 @@ import UpdateProduct from './pages/Admin/ManageProducts/UpdateProduct';
 import Categories from './pages/Categories';
 import ContactDataList from './pages/Admin/ManageContactData/ContactDataList';
 import ViewContactData from 'pages/Admin/ManageContactData/ViewContactData';
+import AddCoverImage from './pages/Admin/ManageCoverImage/AddCoverImage';
+import ManageCoverImageList from './pages/Admin/ManageCoverImage/ManageCoverImageList';
+import UpdateCoverImage from './pages/Admin/ManageCoverImage/UpdateCoverImage';
 
 //TODO - move this to separate theme file
 const theme = createTheme({
@@ -120,6 +123,10 @@ const App: FC = () => {
 
             <Route path="dashboard/contact-data" element={<ContactDataList />} />
             <Route path="dashboard/view-contact-data" element={<ViewContactData />} />
+
+            <Route path="dashboard/cover-images" element={<ManageCoverImageList />} />
+            <Route path="dashboard/add-cover-image" element={<AddCoverImage />} />
+            <Route path="dashboard/update-cover-image" element={<UpdateCoverImage />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

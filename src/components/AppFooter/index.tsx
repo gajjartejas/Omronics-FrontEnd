@@ -39,10 +39,6 @@ const SUPPORT_OPTIONS = [
     id: 2,
     name: 'Downloads',
   },
-  {
-    id: 3,
-    name: 'Brands',
-  },
 ];
 
 export const Footer: FC = (): ReactElement => {
@@ -54,6 +50,7 @@ export const Footer: FC = (): ReactElement => {
         backgroundColor: 'black',
         paddingTop: '4rem',
         paddingBottom: '4rem',
+        marginTop: '4rem',
       }}>
       <Container maxWidth="lg">
         <Stack direction="row" justifyContent="space-around" alignItems="flex-start" spacing={2}>

@@ -1,11 +1,8 @@
 import { Button, Container, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import React, { useRef } from 'react';
-import CategoryService from '../../../../services/api-service/category/category';
-import DropdownTreeSelect from 'react-dropdown-tree-select';
+import React from 'react';
 import 'react-dropdown-tree-select/dist/styles.css';
 import '../../../../App.css';
-
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import { UploadStatus } from '../../ManageProducts/UpdateProduct';
@@ -17,144 +14,92 @@ import FileUploader, { FileUploaderResult } from '../../../../services/file-uplo
 import AppHelpers from '../../../../helpers';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
-import CategoryImageService from '../../../../services/api-service/category-image.ts/category-image';
 import useQuery from '../../../../hooks/useQuery';
-import { IBaseCategory, ICategory } from '../../../../services/api-service/category/types';
 import Checkbox from '@mui/material/Checkbox';
+import CoverImageService from '../../../../services/api-service/cover-image/cover-image';
+import { IBaseCoverImage } from '../../../../services/api-service/cover-image/types';
 
 const MAX_IMAGE_UPLOAD = 50;
 
-interface IAddCategory extends ICategory {
-  children?: ICategory[];
-  label: string;
-  value: string;
-  checked: boolean;
-  disabled: boolean;
-  expanded: boolean;
-  selected: boolean;
-}
-
-function UpdateCategory() {
-  //Refs
-  const selectedCategoryId = useRef<number | null>(null);
-
+function UpdateCoverImage() {
   //Const
   const navigate = useNavigate();
   const query = useQuery();
-  const categoryId = query.get('id');
+  const coverImageId = query.get('id');
 
   //States
   const [images, setImages] = React.useState<ImageType[]>([]);
   const [isImageUploading, setIsImageUploading] = React.useState<boolean>(false);
-  const [categories, setCategories] = React.useState<IAddCategory[]>([]);
-  const [name, setName] = React.useState<string>('');
+  const [title, setTitle] = React.useState<string>('');
   const [description, setDescription] = React.useState<string>('');
-  const [isFeatured, setIsFeatured] = React.useState<boolean>(false);
   const [isActive, setIsActive] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     (async () => {
-      if (!categoryId) {
+      if (!coverImageId) {
         return;
       }
 
-      const numId = Number(categoryId);
-      const category = await CategoryService.getCategoryById(numId);
+      const numId = Number(coverImageId);
+      const coverImage = await CoverImageService.getCoverImageById(numId);
 
-      if (!category) {
+      if (!coverImage) {
         return;
       }
 
-      setName(category.name ?? '');
-      setDescription(category.description ?? '');
+      setTitle(coverImage.title ?? '');
+      setDescription(coverImage.description ?? '');
 
-      setIsFeatured(category.featured);
-      setIsActive(category.active);
+      setIsActive(coverImage.active);
 
       //Images
-      let pImages = category.images.map(v => {
+      let pImages = [coverImage].map(v => {
         return {
           id: v.id,
-          dataURL: Config.Constants.CATEGORY_IMAGE_PATH + v.url!,
+          dataURL: Config.Constants.COVER_IMAGE_PATH + v.url!,
           status: UploadStatus.REMOTE,
           remoteFileName: v.url,
         };
       });
       setImages(pImages);
-
-      //Dropdown
-      let categories = await CategoryService.getCategories();
-      const hashTable = Object.create(null);
-      categories?.forEach(
-        aData =>
-          (hashTable[aData.id] = {
-            ...aData,
-            label: aData.name,
-            value: aData.name,
-            children: [],
-            checked: aData.id === category?.parentId,
-          }),
-      );
-
-      const dataTree: IAddCategory[] = [];
-      categories?.forEach(aData => {
-        if (aData.parentId) {
-          hashTable[aData.parentId].children.push(hashTable[aData.id]);
-        } else {
-          dataTree.push(hashTable[aData.id]);
-        }
-      });
-
-      setCategories(dataTree!);
     })();
-  }, [categoryId]);
+  }, [coverImageId]);
 
   const clearForm = () => {
-    setName('');
+    setTitle('');
     setDescription('');
-
-    let newCategories = [...categories];
-    newCategories.forEach(v => (v.selected = false));
-    setCategories(newCategories);
   };
-
-  const onChange = (currentNode: any, selectedNodes: any) => {
-    if (selectedNodes && selectedNodes.length > 0) {
-      selectedCategoryId.current = selectedNodes[0].id;
-    }
-  };
-
-  const onAction = (node: any, action: any) => {};
-
-  const onNodeToggle = (currentNode: any) => {};
 
   const onClickSave = async () => {
-    if (!name || name.trim().length < 1) {
-      toast.error('Category name is required!');
+    if (!title || title.trim().length < 1) {
+      toast.error('Title is required!');
       return;
     }
 
     let imagesToCreate = images
-      .filter(v => v.status === UploadStatus.FINISH)
+      .filter(v => v.status === UploadStatus.FINISH || v.status === UploadStatus.REMOTE)
       .map(v => {
         return { url: v.remoteFileName as string };
       });
 
-    const newCategory: IBaseCategory = {
-      name: name,
+    if (imagesToCreate.length < 1) {
+      toast.error('Cover image is required!');
+      return;
+    }
+
+    const newCoverImage: IBaseCoverImage = {
+      title: title,
+      url: imagesToCreate[0].url,
       description: description,
-      parentId: selectedCategoryId.current,
-      images: { create: imagesToCreate },
-      featured: isFeatured,
       active: isActive,
     };
 
-    const numId = Number(categoryId);
-    const result = await CategoryService.updateCategory(numId, newCategory);
+    const numId = Number(coverImageId);
+    const result = await CoverImageService.updateCoverImage(numId, newCoverImage);
     if (result) {
-      toast.success('Category updated successfully!');
+      toast.success('Cover image updated successfully!');
       clearForm();
-      navigate(`/admin/dashboard/categories`);
+      navigate(`/admin/dashboard/cover-images`);
     }
   };
 
@@ -206,7 +151,7 @@ function UpdateCategory() {
       }
       const data = new FormData();
       data.append('file', image.file!);
-      const params = { p: 'categories' };
+      const params = { p: 'cover-images' };
       let promise = FileUploader.upload<FileUploaderResult>('', data, params, i);
       queue.add(() => promise);
     }
@@ -216,9 +161,9 @@ function UpdateCategory() {
     if (images[index].remoteFileName) {
       try {
         const imageId = Number(item.id);
-        await CategoryImageService.deleteCategoryImage(imageId);
+        await CoverImageService.deleteCoverImage(imageId);
         await FileUploader.deleteFile<FileUploaderResult>('', new FormData(), {
-          p: 'categories',
+          p: 'cover-images',
           del: images[index].remoteFileName,
         });
         callback(index);
@@ -243,10 +188,6 @@ function UpdateCategory() {
     setImages(updatedImages);
   };
 
-  const handleChangeFeaturedCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsFeatured(event.target.checked);
-  };
-
   const handleChangeActiveCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsActive(event.target.checked);
   };
@@ -256,10 +197,10 @@ function UpdateCategory() {
       <Container sx={{}}>
         <Grid2 sx={{ flex: 1, pt: 8, justifyContent: 'center' }} container spacing={2}>
           <Grid2 sx={{ ml: 0, flex: 1 }}>
-            <Typography sx={{ mt: 2, fontSize: 24, fontWeight: '500' }}>{'Update Category'}</Typography>
+            <Typography sx={{ mt: 2, fontSize: 24, fontWeight: '500' }}>{'Update Cover Image'}</Typography>
             <TextField
-              value={name}
-              onChange={event => setName(event.target.value)}
+              value={title}
+              onChange={event => setTitle(event.target.value)}
               sx={{ mt: 2 }}
               required
               fullWidth
@@ -269,26 +210,17 @@ function UpdateCategory() {
               value={description}
               onChange={event => setDescription(event.target.value)}
               sx={{ mt: 2 }}
-              fullWidth
+              id="outlined-multiline-static"
               label="Description"
-            />
-            <DropdownTreeSelect
-              className="mdl-demo"
-              texts={{ placeholder: 'Categories' }}
-              data={categories}
-              onChange={onChange}
-              onAction={onAction}
-              onNodeToggle={onNodeToggle}
-              mode={'hierarchical'}
+              multiline
+              fullWidth
+              rows={4}
+              defaultValue="Default Value"
             />
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox onChange={handleChangeFeaturedCheckbox} checked={isFeatured} />}
-                label="Featured Product"
-              />
-              <FormControlLabel
                 control={<Checkbox onChange={handleChangeActiveCheckbox} checked={isActive} />}
-                label="Active Product"
+                label="Active"
               />
             </FormGroup>
             <Typography sx={{ mt: 2, mb: 1, fontSize: 16, fontWeight: 400 }}>{'Images'}</Typography>
@@ -329,4 +261,4 @@ function UpdateCategory() {
   );
 }
 
-export default UpdateCategory;
+export default UpdateCoverImage;

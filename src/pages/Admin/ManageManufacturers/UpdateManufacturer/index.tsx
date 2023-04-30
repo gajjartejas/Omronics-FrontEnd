@@ -1,4 +1,4 @@
-import { Button, Container, TextField, Typography } from '@mui/material';
+import { Button, Container, FormControlLabel, FormGroup, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import 'react-dropdown-tree-select/dist/styles.css';
@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import useQuery from 'hooks/useQuery';
 import { IBaseManufacturer } from '../../../../services/api-service/manufacturer/types';
+import Checkbox from '@mui/material/Checkbox';
 
 function UpdateManufacturer() {
   //Const
@@ -18,6 +19,8 @@ function UpdateManufacturer() {
   //State
   const [name, setName] = React.useState<string>('');
   const [description, setDescription] = React.useState<string>('');
+  const [isFeatured, setIsFeatured] = React.useState<boolean>(false);
+  const [isActive, setIsActive] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     (async () => {
@@ -26,8 +29,13 @@ function UpdateManufacturer() {
       }
       const numId = Number(manufacturerId);
       const manufacturer = await ManufacturerService.getManufactureById(numId);
+      if (!manufacturer) {
+        return;
+      }
       setName(manufacturer?.name ?? '');
       setDescription(manufacturer?.description ?? '');
+      setIsFeatured(manufacturer?.featured);
+      setIsActive(manufacturer?.active);
     })();
   }, [manufacturerId]);
 
@@ -45,8 +53,8 @@ function UpdateManufacturer() {
     const newManufacturer: IBaseManufacturer = {
       name: name,
       description: description,
-      featured: false,
-      active: true,
+      featured: isFeatured,
+      active: isActive,
     };
     const numId = Number(manufacturerId);
     const result = await ManufacturerService.updateManufacture(numId, newManufacturer);
@@ -55,6 +63,14 @@ function UpdateManufacturer() {
       clearForm();
       navigate(`/admin/dashboard/manufacturers`);
     }
+  };
+
+  const handleChangeFeaturedCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFeatured(event.target.checked);
+  };
+
+  const handleChangeActiveCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsActive(event.target.checked);
   };
 
   return (
@@ -78,6 +94,16 @@ function UpdateManufacturer() {
               fullWidth
               label="Description"
             />
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox onChange={handleChangeFeaturedCheckbox} checked={isFeatured} />}
+                label="Featured Product"
+              />
+              <FormControlLabel
+                control={<Checkbox onChange={handleChangeActiveCheckbox} checked={isActive} />}
+                label="Active Product"
+              />
+            </FormGroup>
             <Button onClick={onClickSave} sx={{ mt: 2 }} variant="contained">
               {'UPDATE'}
             </Button>
