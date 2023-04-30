@@ -25,6 +25,14 @@ const deleteManufacturers = (data: number[]): Promise<IManufacturer | null> => {
   return APIClient.post<IManufacturer, { data: number[] }>(`/manufacturers/deleteManufacturers`, { data });
 };
 
+const addFeaturedManufacturers = (data: number[]): Promise<IManufacturer | null> => {
+  return APIClient.post<IManufacturer, { data: number[] }>(`/manufacturers/addFeaturedManufacturers`, { data });
+};
+
+const removeFeaturedManufacturers = (data: number[]): Promise<IManufacturer | null> => {
+  return APIClient.post<IManufacturer, { data: number[] }>(`/manufacturers/removeFeaturedManufacturers`, { data });
+};
+
 const ManufacturerService = {
   getManufacturers,
   getManufactureById,
@@ -32,5 +40,8 @@ const ManufacturerService = {
   updateManufacture,
   deleteManufacturer,
   deleteManufacturers,
+  addFeaturedManufacturers,
+  removeFeaturedManufacturers
 };
+
 export default ManufacturerService;

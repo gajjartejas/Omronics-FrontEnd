@@ -33,6 +33,14 @@ const deleteCategories = (data: number[]): Promise<ICategory | null> => {
   return APIClient.post<ICategory, { data: number[] }>(`/categories/deleteCategories`, { data });
 };
 
+const addFeaturedCategories = (data: number[]): Promise<ICategory | null> => {
+  return APIClient.post<ICategory, { data: number[] }>(`/products/addFeaturedCategories`, { data });
+};
+
+const removeFeaturedCategories = (data: number[]): Promise<ICategory | null> => {
+  return APIClient.post<ICategory, { data: number[] }>(`/products/removeFeaturedCategories`, { data });
+};
+
 const CategoryService = {
   getCategories,
   getCategoryById,
@@ -42,5 +50,8 @@ const CategoryService = {
   deleteCategories,
   getChildCategoriesById,
   getProductsByCategoryId,
+  addFeaturedCategories,
+  removeFeaturedCategories,
 };
+
 export default CategoryService;

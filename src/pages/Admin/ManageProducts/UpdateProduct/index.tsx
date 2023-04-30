@@ -144,6 +144,9 @@ function UpdateProduct() {
           return { id: v.id };
         });
 
+        setIsFeatured(productInfo.featured);
+        setIsActive(productInfo.active);
+
         //Images
         let pImages = productInfo.images.map(v => {
           return {
@@ -394,7 +397,7 @@ function UpdateProduct() {
       resourcees: { create: resourceesToCreate },
       manufacturer: { connect: selectedManufacturerId.current },
       featured: isFeatured,
-      active: true,
+      active: isActive,
     };
 
     setIsProductCreating(true);

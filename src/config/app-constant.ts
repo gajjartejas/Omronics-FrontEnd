@@ -6,6 +6,7 @@ const Constant = {
   IMAGE_PATH: 'https://api.omronics.com/media/images/',
   FILE_PATH: 'https://api.omronics.com/media/resources/',
   CATEGORY_IMAGE_PATH: 'https://api.omronics.com/media/categories/',
+  COVER_IMAGE_PATH: 'https://api.omronics.com/media/cover-images/',
   HOME_MENU_OPTIONS: [
     { id: 0, name: 'Home' },
     { id: 1, name: 'Products & Brands' },
@@ -91,34 +92,9 @@ const Constant = {
       items: [
         {
           id: 0,
-          title: 'Home',
-          icon: 'home',
-        },
-        {
-          id: 1,
-          title: 'Products & Brands',
-          icon: 'shopping_cart',
-        },
-        {
-          id: 2,
-          title: 'About US',
-          icon: 'verified_user',
-        },
-        {
-          id: 3,
-          title: 'Contact US',
-          icon: 'verified_user',
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: 'Others',
-      items: [
-        {
-          id: 0,
-          title: 'Logout',
-          icon: 'power_off',
+          title: 'Cover Image',
+          route: '/admin/dashboard/cover-images',
+          icon: 'web',
         },
       ],
     },

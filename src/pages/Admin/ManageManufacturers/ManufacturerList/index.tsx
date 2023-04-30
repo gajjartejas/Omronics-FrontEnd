@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Menu, MenuItem, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate } from 'react-router';
 import moment from 'moment';
@@ -13,6 +13,8 @@ import { GridSelectionModel } from '@mui/x-data-grid/models/gridSelectionModel';
 import { GridCallbackDetails } from '@mui/x-data-grid/models/api';
 import { toast } from 'react-toastify';
 import Components from '../../../../components';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
 
 export default function ManufacturerList() {
   //Refs
@@ -24,19 +26,36 @@ export default function ManufacturerList() {
   //State
   const [rows, setRows] = React.useState<any[]>([]);
   const [deleteDialogVisible, setDeleteDialogVisible] = React.useState(false);
+  const [addingFeatured, setAddingFeatured] = React.useState(false);
+  const [removingFeatured, setRemovingFeatured] = React.useState(false);
+
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 20 },
     {
       field: 'name',
       headerName: 'Name',
-      width: 300,
+      width: 200,
       editable: true,
     },
     {
       field: 'description',
       headerName: 'Description',
-      width: 500,
+      width: 300,
       editable: true,
+    },
+    {
+      field: 'active',
+      headerName: 'Active',
+      width: 100,
+      editable: true,
+      valueFormatter: params => (params.value ? 'Active' : 'Inactive'),
+    },
+    {
+      field: 'featured',
+      headerName: 'Featured',
+      width: 100,
+      editable: true,
+      valueFormatter: params => (params.value ? 'Featured' : '-'),
     },
     {
       field: 'createdAt',
@@ -53,6 +72,23 @@ export default function ManufacturerList() {
       description: 'This column has a value getter and is not sortable.',
       sortable: true,
       width: 180,
+    },
+    {
+      field: 'view',
+      headerName: '',
+      width: 50,
+      renderCell: params => {
+        return (
+          <IconButton
+            onClick={() => {
+              onClickView(params);
+            }}
+            aria-label="view"
+            size="small">
+            <VisibilityIcon fontSize="inherit" />
+          </IconButton>
+        );
+      },
     },
     {
       field: 'edit',
@@ -77,12 +113,16 @@ export default function ManufacturerList() {
   const [selectedIds, setSelectedIds] = React.useState<number[]>([]);
   const [deleting, setDeleting] = React.useState(false);
 
-  const onPressAddNewProductButton = () => {
+  const onPressAddNewButton = () => {
     navigate('/admin/dashboard/add-manufacturer');
   };
 
   const onClickEdit = (params: any) => {
     navigate(`/admin/dashboard/update-manufacturer?id=${params.id}`);
+  };
+
+  const onClickView = (params: any) => {
+    // window.open(`${window.location.origin}/categories?id=${params.id}`);
   };
 
   React.useEffect(() => {
@@ -121,22 +161,78 @@ export default function ManufacturerList() {
     setRows(data!);
   };
 
+  const onMarkAsFeatured = async () => {
+    try {
+      setAddingFeatured(true);
+      await ManufacturerService.addFeaturedManufacturers(selectedIds);
+      await reloadPage();
+    } catch (e) {
+      toast.error(JSON.stringify(e));
+    } finally {
+      setAddingFeatured(false);
+    }
+  };
+
+  const onMarkAsUnFeatured = async () => {
+    try {
+      setRemovingFeatured(true);
+      await ManufacturerService.removeFeaturedManufacturers(selectedIds);
+      await reloadPage();
+    } catch (e) {
+      toast.error(JSON.stringify(e));
+    } finally {
+      setRemovingFeatured(false);
+    }
+  };
+
   return (
     <div>
       <Grid2 sx={{ flex: 1, pt: 8, paddingX: 4 }} container spacing={0}>
         <Stack sx={{ flex: 1 }} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
           <Typography sx={{ mt: 2, mb: 1, fontSize: 24, fontWeight: '500' }}>{'Manufacturers'}</Typography>
           <div>
-            <Button
-              disabled={selectedIds.length < 1 || deleting}
-              onClick={onPressDeleteButton}
-              sx={{ mt: 2, marginRight: 2 }}
-              variant="contained">
-              {deleting ? 'PLEASE WAIT...' : `DELETE (${selectedIds.length})`}
-            </Button>
-            <Button onClick={onPressAddNewProductButton} sx={{ mt: 2 }} variant="contained">
-              {'ADD NEW MANUFACTURER'}
-            </Button>
+            <PopupState variant="popover" popupId="demo-popup-menu">
+              {popupState => (
+                <React.Fragment>
+                  <Button variant="contained" {...bindTrigger(popupState)}>
+                    {'More Options'}
+                  </Button>
+                  <Menu {...bindMenu(popupState)}>
+                    <MenuItem
+                      onClick={() => {
+                        popupState.close();
+                        onPressAddNewButton();
+                      }}>
+                      {'ADD NEW MANUFACTURER'}
+                    </MenuItem>
+                    <MenuItem
+                      disabled={selectedIds.length < 1 || addingFeatured}
+                      onClick={() => {
+                        popupState.close();
+                        onMarkAsFeatured();
+                      }}>
+                      {`MARK FEATURED (${selectedIds.length})`}
+                    </MenuItem>
+                    <MenuItem
+                      disabled={selectedIds.length < 1 || removingFeatured}
+                      onClick={() => {
+                        popupState.close();
+                        onMarkAsUnFeatured();
+                      }}>
+                      {`REMOVE FEATURED (${selectedIds.length})`}
+                    </MenuItem>
+                    <MenuItem
+                      disabled={selectedIds.length < 1}
+                      onClick={() => {
+                        popupState.close();
+                        onPressDeleteButton();
+                      }}>
+                      {deleting ? 'PLEASE WAIT...' : `DELETE (${selectedIds.length})`}
+                    </MenuItem>
+                  </Menu>
+                </React.Fragment>
+              )}
+            </PopupState>
           </div>
         </Stack>
         <Box sx={{ height: height * 0.7, width: '100%' }}>
