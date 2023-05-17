@@ -1,7 +1,6 @@
 //Category Image
 import { IBaseConnect, IBaseCreate, IBaseCreateOrConnect, IBaseSet } from '../types';
 import { IProduct } from '../product/types';
-import { ICategoryImage } from '../category-image.ts/types';
 
 //Category
 export interface IBaseCategory {
@@ -19,4 +18,16 @@ export interface ICategory extends IBaseCategory {
   updatedAt: Date;
   images: ICategoryImage[];
   product?: IProduct[];
+}
+
+//Images
+export interface IBaseCategoryImage {
+  url: string | null;
+}
+
+export interface ICategoryImage extends IBaseCategoryImage {
+  id: number;
+  categories: ICategory[] | null;
+  createdAt: Date;
+  updatedAt: Date;
 }

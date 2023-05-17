@@ -1,7 +1,7 @@
 import { Button, Container, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useRef } from 'react';
-import CoverImageService from '../../../../services/api-service/cover-image/cover-image';
+import CoverImageService from '../../../../services/api-service/cover-image';
 import 'react-dropdown-tree-select/dist/styles.css';
 import '../../../../App.css';
 // @ts-ignore

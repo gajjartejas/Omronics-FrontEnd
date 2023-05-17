@@ -5,15 +5,18 @@ import { Box, Divider, Stack, Typography } from '@mui/material';
 import { bindPopover, PopupState } from 'material-ui-popup-state/hooks';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import AppLinkButton from '../AppLinkButton';
-import Constant from '../../config/app-constant';
+import { IProduct } from '../../services/api-service/product/types';
+import { IManufacturer } from '../../services/api-service/manufacturer/types';
 
 interface Props {
   popupState: PopupState;
+  featuredProducts: IProduct[];
+  featuredManufacturer: IManufacturer[];
 }
 
 const AppNavbarPopover: React.FC<Props> = (props: Props) => {
   //Const
-  const { popupState } = props;
+  const { popupState, featuredProducts, featuredManufacturer } = props;
 
   return (
     <HoverPopover
@@ -33,7 +36,7 @@ const AppNavbarPopover: React.FC<Props> = (props: Props) => {
             <Typography sx={{ marginY: 2 }} variant="h6">
               {'Featured Products'}
             </Typography>
-            {Constant.HOME_PRODUCTS.map(v => {
+            {featuredProducts.map(v => {
               return <AppLinkButton key={v.id.toString()} title={v.name} />;
             })}
             <AppLinkButton sx={{ color: '#DC004E', fontWeight: 'bold' }} title={'View All'} />
@@ -42,7 +45,7 @@ const AppNavbarPopover: React.FC<Props> = (props: Props) => {
             <Typography sx={{ marginY: 2 }} variant="h6">
               {'Features Brands'}
             </Typography>
-            {Constant.HOME_RANDS.map(v => {
+            {featuredManufacturer.map(v => {
               return <AppLinkButton key={v.id.toString()} title={v.name} />;
             })}
             <AppLinkButton sx={{ color: '#DC004E', fontWeight: 'bold' }} title={'View All'} />

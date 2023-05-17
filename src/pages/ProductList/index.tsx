@@ -9,6 +9,7 @@ import CategoryService from '../../services/api-service/category/category';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { ICategory } from '../../services/api-service/category/types';
+import Config from '../../config';
 
 function ProductList() {
   //Const
@@ -67,7 +68,9 @@ function ProductList() {
                       index={index}
                       title={item.name}
                       description={''}
-                      image="https://cdn.shopify.com/s/files/1/0068/3235/7429/files/PLC_in_Automation_Equipment_large.png?v=1590164660"
+                      image={
+                        item.images && item.images.length > 0 ? Config.Constants.IMAGE_PATH + item.images[0].url : null
+                      }
                       onPress={onPressCard}
                     />
                   ))}

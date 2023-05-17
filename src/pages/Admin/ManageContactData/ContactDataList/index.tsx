@@ -6,7 +6,7 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate } from 'react-router';
 import moment from 'moment';
 import useWindowDimensions from 'hooks/useWindowDimensions';
-import ContactUsService from '../../../../services/api-service/contact-data/contact-data';
+import ContactUsService from '../../../../services/api-service/contact-data';
 import IconButton from '@mui/material/IconButton';
 import { GridSelectionModel } from '@mui/x-data-grid/models/gridSelectionModel';
 import { GridCallbackDetails } from '@mui/x-data-grid/models/api';

@@ -22,16 +22,20 @@ import Image from 'mui-image';
 import AppNavbarPopover from '../AppNavbarPopover';
 import { useNavigate } from 'react-router-dom';
 import Config from '../../config';
+import { IProduct } from '../../services/api-service/product/types';
+import { IManufacturer } from '../../services/api-service/manufacturer/types';
 
 interface Props {
   items: { id: number; name: string }[];
   window?: () => Window;
+  featuredProducts: IProduct[];
+  featuredManufacturer: IManufacturer[];
 }
 const drawerWidth = 240;
 
 const AppNavbar: React.FC<Props> = (props: Props) => {
   //Const
-  const { window, items } = props;
+  const { window, items, featuredProducts, featuredManufacturer } = props;
   const container = window !== undefined ? () => window().document.body : undefined;
   const navigate = useNavigate();
   const popupState = usePopupState({
@@ -75,6 +79,9 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
         navigate('/about-us');
         break;
       case 3:
+        navigate('/service');
+        break;
+      case 4:
         navigate('/contact-us');
         break;
       default:
@@ -110,7 +117,11 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
               </Button>
             ))}
           </Stack>
-          <AppNavbarPopover popupState={popupState} />
+          <AppNavbarPopover
+            popupState={popupState}
+            featuredManufacturer={featuredManufacturer}
+            featuredProducts={featuredProducts}
+          />
         </Toolbar>
       </AppBar>
       <Box component="nav">

@@ -4,7 +4,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate } from 'react-router';
-import ProductResourceService from '../../../../services/api-service/product-resource/product-resource';
+import ProductResourceService from '../../../../services/api-service/product-resource';
 import moment from 'moment';
 import useWindowDimensions from '../../../../hooks/useWindowDimensions';
 import Config from '../../../../config';

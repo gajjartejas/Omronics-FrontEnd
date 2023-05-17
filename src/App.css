@@ -102,3 +102,7 @@
   border-right-style: none;
   border-color: #2196f3;
 }
+
+.ck-editor__editable {
+  min-height: 500px;
+}

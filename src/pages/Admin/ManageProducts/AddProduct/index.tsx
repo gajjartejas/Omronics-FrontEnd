@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 import ProductImageService from '../../../../services/api-service/product/product-image';
-import ProductResourceService from '../../../../services/api-service/product-resource/product-resource';
+import ProductResourceService from '../../../../services/api-service/product-resource';
 import { useNavigate } from 'react-router';
 import AppHelpers from '../../../../helpers';
 import { ICategory } from '../../../../services/api-service/category/types';

@@ -14,7 +14,7 @@ import { UploadStatus } from '../../ManageProducts/AddProduct';
 import FileUploader, { FileUploaderResult } from '../../../../services/file-uploader';
 import PQueue from 'p-queue';
 import AppHelpers from '../../../../helpers';
-import CategoryImageService from '../../../../services/api-service/category-image.ts/category-image';
+import CategoryImageService from '../../../../services/api-service/category/category-image';
 import { IBaseCategory, ICategory } from '../../../../services/api-service/category/types';
 import Checkbox from '@mui/material/Checkbox';
 
@@ -33,7 +33,7 @@ const MAX_IMAGE_UPLOAD = 1;
 function AddCategory() {
   const selectedCategoryId = useRef<number | null>(null);
 
-  //Images
+  //State
   const [images, setImages] = React.useState<ImageType[]>([]);
   const [isImageUploading, setIsImageUploading] = React.useState<boolean>(false);
 

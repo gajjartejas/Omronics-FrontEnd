@@ -42,6 +42,11 @@ import ViewContactData from 'pages/Admin/ManageContactData/ViewContactData';
 import AddCoverImage from './pages/Admin/ManageCoverImage/AddCoverImage';
 import ManageCoverImageList from './pages/Admin/ManageCoverImage/ManageCoverImageList';
 import UpdateCoverImage from './pages/Admin/ManageCoverImage/UpdateCoverImage';
+import ManageAboutUS from './pages/Admin/ManageAboutUS';
+import ManageContactUS from './pages/Admin/ManageContactUS';
+import ManageFooter from './pages/Admin/ManageFooter';
+import ManageService from './pages/Admin/ManageService';
+import Service from './pages/Service';
 
 //TODO - move this to separate theme file
 const theme = createTheme({
@@ -98,6 +103,7 @@ const App: FC = () => {
             <Route path="/products" element={<ProductList />} />
             <Route path="/product" element={<ProductDetail />} />
             <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/service" element={<Service />} />
             <Route path="/about-us" element={<AboutUs />} />
           </Route>
 
@@ -127,6 +133,11 @@ const App: FC = () => {
             <Route path="dashboard/cover-images" element={<ManageCoverImageList />} />
             <Route path="dashboard/add-cover-image" element={<AddCoverImage />} />
             <Route path="dashboard/update-cover-image" element={<UpdateCoverImage />} />
+
+            <Route path="dashboard/manage-service" element={<ManageService />} />
+            <Route path="dashboard/manage-about-us" element={<ManageAboutUS />} />
+            <Route path="dashboard/manage-contact-us" element={<ManageContactUS />} />
+            <Route path="dashboard/manage-footer" element={<ManageFooter />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

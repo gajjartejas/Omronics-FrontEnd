@@ -1,10 +1,9 @@
-import { Status, Wrapper } from '@googlemaps/react-wrapper';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import '../../App.css';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import ContactDataService from '../../services/api-service/contact-data/contact-data';
+import ContactDataService from '../../services/api-service/contact-data';
 import { IBaseContactData } from '../../services/api-service/contact-data/types';
 
 function ContactUs() {
@@ -13,10 +12,6 @@ function ContactUs() {
   const [phoneNo, setPhoneNo] = useState('');
   const [email, setEmail] = useState('');
   const [requirements, setRequirements] = useState('');
-
-  const render = (status: Status) => {
-    return <h1>{status}</h1>;
-  };
 
   const onClickSave = async () => {
     if (!name || name.trim().length < 1) {
@@ -74,7 +69,7 @@ function ContactUs() {
   };
 
   return (
-    <Wrapper render={render} apiKey={''}>
+    <Container sx={{ pb: 4 }}>
       <Box sx={{ pt: 8 }}>
         <div style={{ width: '100%' }}>
           <iframe
@@ -190,7 +185,7 @@ function ContactUs() {
           </Grid2>
         </Container>
       </Box>
-    </Wrapper>
+    </Container>
   );
 }
 

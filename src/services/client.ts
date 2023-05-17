@@ -39,7 +39,7 @@ const post = async <Type, DataType>(
   const config = {};
   let rawResponse = await apiClient.post<IAPIBase>(path, formData, config);
   console.log('API RESPONSE:', path, rawResponse.data);
-  return rawResponse as Type;
+  return rawResponse.data as Type;
 };
 
 const patch = async <Type, DataType>(

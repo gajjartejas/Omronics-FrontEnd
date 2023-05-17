@@ -1,20 +1,28 @@
-import { selectAccount } from '../../redux/selectors/accountSelectors';
-import { useSelector } from 'react-redux';
 import { useOutlet } from 'react-router-dom';
 import Config from '../../config';
 import AppNavbar from '../AppNavbar';
 import AppFooter from '../AppFooter';
+import useStaticDataStore from '../../store/store';
+import { useEffect } from 'react';
 
 const HomeLayout = () => {
   //Const
-  const account = useSelector(selectAccount);
   const outlet = useOutlet();
+  const getData = useStaticDataStore(state => state.fetch);
+  const featuredProducts = useStaticDataStore(state => state.featuredProducts);
+  const featuredManufacturer = useStaticDataStore(state => state.featuredManufacturer);
 
-  console.log('HomeLayout', account);
+  useEffect(() => {
+    getData();
+  }, [getData]);
 
   return (
     <div>
-      <AppNavbar items={Config.Constants.HOME_MENU_OPTIONS} />
+      <AppNavbar
+        items={Config.Constants.HOME_MENU_OPTIONS}
+        featuredManufacturer={featuredManufacturer}
+        featuredProducts={featuredProducts}
+      />
       {outlet}
       <AppFooter />
     </div>

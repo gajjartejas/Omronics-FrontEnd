@@ -15,7 +15,7 @@ import { GridSelectionModel } from '@mui/x-data-grid/models/gridSelectionModel';
 import { GridCallbackDetails } from '@mui/x-data-grid/models/api';
 import { toast } from 'react-toastify';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
-import CoverImageService from '../../../../services/api-service/cover-image/cover-image';
+import CoverImageService from '../../../../services/api-service/cover-image';
 
 export default function ManageCoverImageList() {
   //Refs
