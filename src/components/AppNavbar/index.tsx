@@ -20,24 +20,42 @@ import {
 import { bindHover, usePopupState } from 'material-ui-popup-state/hooks';
 import Image from 'mui-image';
 import AppNavbarPopover from '../AppNavbarPopover';
-import { useNavigate } from 'react-router-dom';
 import Config from '../../config';
 import { IProduct } from '../../services/api-service/product/types';
 import { IManufacturer } from '../../services/api-service/manufacturer/types';
 
-interface Props {
+interface AppNavbarProps {
   items: { id: number; name: string }[];
   window?: () => Window;
   featuredProducts: IProduct[];
   featuredManufacturer: IManufacturer[];
+  onClickProduct: (item: IProduct, index: number) => void;
+  onClickManufacturer: (item: IManufacturer, index: number) => void;
+  onClickMenuButton: (item: { id: number; name: string }, index: number) => void;
+  onClickFixtures: (item: { id: number; name: string }, index: number) => void;
+  onClickViewAllBrands: () => void;
+  onClickViewAllFixtures: () => void;
+  onClickViewAllProduct: () => void;
 }
 const drawerWidth = 240;
 
-const AppNavbar: React.FC<Props> = (props: Props) => {
+const AppNavbar: React.FC<AppNavbarProps> = (props: AppNavbarProps) => {
   //Const
-  const { window, items, featuredProducts, featuredManufacturer } = props;
+  const {
+    window,
+    items,
+    featuredProducts,
+    featuredManufacturer,
+    onClickProduct,
+    onClickManufacturer,
+    onClickMenuButton,
+    onClickFixtures,
+    onClickViewAllBrands,
+    onClickViewAllFixtures,
+    onClickViewAllProduct,
+  } = props;
   const container = window !== undefined ? () => window().document.body : undefined;
-  const navigate = useNavigate();
+
   const popupState = usePopupState({
     variant: 'popover',
     popupId: 'demoPopover',
@@ -66,28 +84,6 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
       </List>
     </Box>
   );
-
-  const onClickMenuButton = (item: { id: number; name: string }, index: number) => {
-    switch (item.id) {
-      case 0:
-        navigate('/');
-        break;
-      case 1:
-        navigate('/');
-        break;
-      case 2:
-        navigate('/about-us');
-        break;
-      case 3:
-        navigate('/service');
-        break;
-      case 4:
-        navigate('/contact-us');
-        break;
-      default:
-        break;
-    }
-  };
 
   return (
     <>
@@ -121,6 +117,12 @@ const AppNavbar: React.FC<Props> = (props: Props) => {
             popupState={popupState}
             featuredManufacturer={featuredManufacturer}
             featuredProducts={featuredProducts}
+            onClickManufacturer={onClickManufacturer}
+            onClickProduct={onClickProduct}
+            onClickFixtures={onClickFixtures}
+            onClickViewAllBrands={onClickViewAllBrands}
+            onClickViewAllFixtures={onClickViewAllFixtures}
+            onClickViewAllProduct={onClickViewAllProduct}
           />
         </Toolbar>
       </AppBar>

@@ -7,16 +7,33 @@ import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import AppLinkButton from '../AppLinkButton';
 import { IProduct } from '../../services/api-service/product/types';
 import { IManufacturer } from '../../services/api-service/manufacturer/types';
+import Constant from '../../config/app-constant';
 
 interface Props {
   popupState: PopupState;
   featuredProducts: IProduct[];
   featuredManufacturer: IManufacturer[];
+  onClickProduct: (item: IProduct, index: number) => void;
+  onClickManufacturer: (item: IManufacturer, index: number) => void;
+  onClickFixtures: (item: { id: number; name: string }, index: number) => void;
+  onClickViewAllProduct: () => void;
+  onClickViewAllBrands: () => void;
+  onClickViewAllFixtures: () => void;
 }
 
 const AppNavbarPopover: React.FC<Props> = (props: Props) => {
   //Const
-  const { popupState, featuredProducts, featuredManufacturer } = props;
+  const {
+    popupState,
+    featuredProducts,
+    featuredManufacturer,
+    onClickProduct,
+    onClickManufacturer,
+    onClickFixtures,
+    onClickViewAllProduct,
+    onClickViewAllBrands,
+    onClickViewAllFixtures,
+  } = props;
 
   return (
     <HoverPopover
@@ -36,29 +53,40 @@ const AppNavbarPopover: React.FC<Props> = (props: Props) => {
             <Typography sx={{ marginY: 2 }} variant="h6">
               {'Featured Products'}
             </Typography>
-            {featuredProducts.map(v => {
-              return <AppLinkButton key={v.id.toString()} title={v.name} />;
+            {featuredProducts.map((v, idx) => {
+              return <AppLinkButton onClick={() => onClickProduct(v, idx)} key={v.id.toString()} title={v.name} />;
             })}
-            <AppLinkButton sx={{ color: '#DC004E', fontWeight: 'bold' }} title={'View All'} />
+            <AppLinkButton
+              onClick={onClickViewAllProduct}
+              sx={{ color: '#DC004E', fontWeight: 'bold' }}
+              title={'View All'}
+            />
           </Stack>
           <Stack sx={{}} spacing={4}>
             <Typography sx={{ marginY: 2 }} variant="h6">
               {'Features Brands'}
             </Typography>
-            {featuredManufacturer.map(v => {
-              return <AppLinkButton key={v.id.toString()} title={v.name} />;
+            {featuredManufacturer.map((v, idx) => {
+              return <AppLinkButton onClick={() => onClickManufacturer(v, idx)} key={v.id.toString()} title={v.name} />;
             })}
-            <AppLinkButton sx={{ color: '#DC004E', fontWeight: 'bold' }} title={'View All'} />
+            <AppLinkButton
+              onClick={onClickViewAllBrands}
+              sx={{ color: '#DC004E', fontWeight: 'bold' }}
+              title={'View All'}
+            />
           </Stack>
           <Stack sx={{}} spacing={4}>
             <Typography sx={{ marginY: 2 }} variant="h6">
               {'Resources'}
             </Typography>
-            <AppLinkButton title={'Catalog'} />
-            <AppLinkButton title={'Manual'} />
-            <AppLinkButton title={'Software'} />
-            <AppLinkButton title={'Drawing'} />
-            <AppLinkButton sx={{ color: '#DC004E', fontWeight: 'bold' }} title={'View All'} />
+            {Constant.HOME_MENU_ITEMS_FIXTURES.map((v, idx) => {
+              return <AppLinkButton onClick={() => onClickFixtures(v, idx)} key={v.id.toString()} title={v.name} />;
+            })}
+            <AppLinkButton
+              onClick={onClickViewAllFixtures}
+              sx={{ color: '#DC004E', fontWeight: 'bold' }}
+              title={'View All'}
+            />
           </Stack>
         </Stack>
         <Divider />

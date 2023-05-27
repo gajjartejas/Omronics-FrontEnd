@@ -15,6 +15,12 @@ const Constant = {
     { id: 3, name: 'Service' },
     { id: 4, name: 'Contact Us' },
   ],
+  HOME_MENU_ITEMS_FIXTURES: [
+    { id: 0, name: 'Catalog' },
+    { id: 1, name: 'Manual' },
+    { id: 2, name: 'Software' },
+    { id: 3, name: 'Drawing' },
+  ],
   ADMIN_ITEMS: [
     {
       id: 0,
