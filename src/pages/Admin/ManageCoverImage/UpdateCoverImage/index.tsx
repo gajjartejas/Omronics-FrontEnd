@@ -16,7 +16,7 @@ import AppHelpers from '../../../../helpers';
 import { v4 as uuidv4 } from 'uuid';
 import useQuery from '../../../../hooks/useQuery';
 import Checkbox from '@mui/material/Checkbox';
-import CoverImageService from '../../../../services/api-service/cover-image/cover-image';
+import CoverImageService from '../../../../services/api-service/cover-image';
 import { IBaseCoverImage } from '../../../../services/api-service/cover-image/types';
 
 const MAX_IMAGE_UPLOAD = 50;

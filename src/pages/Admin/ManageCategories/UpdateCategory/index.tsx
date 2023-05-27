@@ -17,7 +17,7 @@ import FileUploader, { FileUploaderResult } from '../../../../services/file-uplo
 import AppHelpers from '../../../../helpers';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
-import CategoryImageService from '../../../../services/api-service/category-image.ts/category-image';
+import CategoryImageService from '../../../../services/api-service/category/category-image';
 import useQuery from '../../../../hooks/useQuery';
 import { IBaseCategory, ICategory } from '../../../../services/api-service/category/types';
 import Checkbox from '@mui/material/Checkbox';

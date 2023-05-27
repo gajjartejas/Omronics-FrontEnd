@@ -1,6 +1,6 @@
 import '../../App.css';
 import useQuery from '../../hooks/useQuery';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProductService from '../../services/api-service/product/product';
 import Config from '../../config';
 import { toast } from 'react-toastify';
@@ -51,6 +51,10 @@ function ProductDetail() {
   const [categories, setCategories] = React.useState<IProductCategory[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   React.useEffect(() => {
     (async () => {
@@ -150,26 +154,34 @@ function ProductDetail() {
               </Grid2>
               <Grid2 sx={{ ml: 0, flex: 1 }}>
                 <Typography sx={{ mt: 2, fontSize: 24, fontWeight: '500' }}>{name}</Typography>
-                <Typography sx={{ mt: 2, fontSize: 20 }}>{description}</Typography>
+                <Typography sx={{ mt: 2, fontSize: 20 }}>{description || 'N/A'}</Typography>
 
                 <div style={{ display: 'flex' }}>
-                  <Typography sx={{ mt: 2, fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Part Number: '}</Typography>
-                  <Typography sx={{ mt: 2, fontSize: 20 }}>{partNumber}</Typography>
+                  <Typography sx={{ mt: 2, fontSize: 20, fontWeight: '500', whiteSpace: 'pre-wrap' }}>
+                    {'Part Number: '}
+                  </Typography>
+                  <Typography sx={{ mt: 2, fontSize: 20 }}>{partNumber || 'N/A'}</Typography>
                 </div>
 
                 <div style={{ display: 'flex' }}>
-                  <Typography sx={{ mt: 2, fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Manufacturer: '}</Typography>
-                  <Typography sx={{ mt: 2, fontSize: 20 }}>{manufacturer}</Typography>
+                  <Typography sx={{ mt: 2, fontSize: 20, fontWeight: '500', whiteSpace: 'pre-wrap' }}>
+                    {'Manufacturer: '}
+                  </Typography>
+                  <Typography sx={{ mt: 2, fontSize: 20 }}>{manufacturer || 'N/A'}</Typography>
                 </div>
 
                 <div style={{ display: 'flex' }}>
-                  <Typography sx={{ mt: 2, fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Model Number: '}</Typography>
-                  <Typography sx={{ mt: 2, fontSize: 20 }}>{modelNumber}</Typography>
+                  <Typography sx={{ mt: 2, fontSize: 20, fontWeight: '500', whiteSpace: 'pre-wrap' }}>
+                    {'Model Number: '}
+                  </Typography>
+                  <Typography sx={{ mt: 2, fontSize: 20 }}>{modelNumber || 'N/A'}</Typography>
                 </div>
 
                 <Box sx={{ mt: 2 }}>
                   <div style={{ display: 'flex' }}>
-                    <Typography sx={{ fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Categories: '}</Typography>
+                    <Typography sx={{ fontSize: 20, fontWeight: '500', whiteSpace: 'pre-wrap' }}>
+                      {'Categories: '}
+                    </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {categories.map(v => {
                         return <Chip key={v.id.toString()} label={v.name} />;
@@ -177,31 +189,6 @@ function ProductDetail() {
                     </Box>
                   </div>
                 </Box>
-
-                <Typography sx={{ mt: 2, mb: 2, fontSize: 20, whiteSpace: 'pre-wrap' }}>{'Resources: '}</Typography>
-                <div style={{ display: 'flex' }}>
-                  {files.map((item, index) => {
-                    return (
-                      <Card sx={{ width: 200, mr: 2 }}>
-                        <CardContent sx={{ flex: 1 }}>
-                          <Typography sx={{ fontSize: 14, height: 50 }} gutterBottom>
-                            {item.title}
-                          </Typography>
-
-                          <div style={{ display: 'flex' }}>
-                            <Typography sx={{ mt: 2, fontSize: 14, whiteSpace: 'pre-wrap' }}>{'Type: '}</Typography>
-                            <Typography sx={{ mt: 2, fontSize: 14 }}>{item.type}</Typography>
-                          </div>
-                        </CardContent>
-                        <CardActions>
-                          <Button onClick={() => onClickDownloadResources(item, index)} size="small">
-                            {'DOWNLOAD'}
-                          </Button>
-                        </CardActions>
-                      </Card>
-                    );
-                  })}
-                </div>
               </Grid2>
             </Grid2>
           )}
@@ -209,6 +196,47 @@ function ProductDetail() {
           {loading && !error && (
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: height * 0.6 }}>
               <CircularProgress />
+            </Box>
+          )}
+
+          {!loading && !error && files && files.length > 0 && (
+            <Box sx={{ mb: 4 }}>
+              <Typography sx={{ mt: 2, mb: 2, fontSize: 24, fontWeight: '500', whiteSpace: 'pre-wrap' }}>
+                {'Resources: '}
+              </Typography>
+              <div style={{ display: 'flex' }}>
+                {files.map((item, index) => {
+                  return (
+                    <Card sx={{ width: 200, mr: 2 }}>
+                      <CardContent sx={{ flex: 1 }}>
+                        <Typography
+                          sx={{
+                            fontSize: 14,
+                            minHeight: 70,
+                            wordWrap: 'break-word',
+                            display: '-webkit-box',
+                            overflow: 'hidden',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 3,
+                          }}
+                          gutterBottom>
+                          {item.title}
+                        </Typography>
+
+                        <div style={{ display: 'flex' }}>
+                          <Typography sx={{ mt: 2, fontSize: 14, whiteSpace: 'pre-wrap' }}>{'Type: '}</Typography>
+                          <Typography sx={{ mt: 2, fontSize: 14 }}>{item.type}</Typography>
+                        </div>
+                      </CardContent>
+                      <CardActions>
+                        <Button onClick={() => onClickDownloadResources(item, index)} size="small">
+                          {'DOWNLOAD'}
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  );
+                })}
+              </div>
             </Box>
           )}
 

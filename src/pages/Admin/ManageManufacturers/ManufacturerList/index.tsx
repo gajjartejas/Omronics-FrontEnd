@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Button, Menu, MenuItem, Stack, Typography } from '@mui/material';
+import { Avatar, Button, Menu, MenuItem, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate } from 'react-router';
 import moment from 'moment';
@@ -15,6 +15,8 @@ import { toast } from 'react-toastify';
 import Components from '../../../../components';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
+import Config from '../../../../config';
+import CategoryIcon from '@mui/icons-material/Category';
 
 export default function ManufacturerList() {
   //Refs
@@ -31,6 +33,21 @@ export default function ManufacturerList() {
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 20 },
+    {
+      field: 'images',
+      headerName: 'Image',
+      width: 80,
+      renderCell: params => {
+        if (params.value && params.value.length > 0 && params.value[0].url) {
+          return <Avatar src={Config.Constants.MANUFACTURER_IMAGE_PATH + params.value[0].url} />;
+        }
+        return (
+          <Avatar>
+            <CategoryIcon />
+          </Avatar>
+        );
+      },
+    },
     {
       field: 'name',
       headerName: 'Name',

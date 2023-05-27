@@ -34,11 +34,11 @@ const deleteCategories = (data: number[]): Promise<ICategory | null> => {
 };
 
 const addFeaturedCategories = (data: number[]): Promise<ICategory | null> => {
-  return APIClient.post<ICategory, { data: number[] }>(`/products/addFeaturedCategories`, { data });
+  return APIClient.post<ICategory, { data: number[] }>(`/categories/addFeaturedCategories`, { data });
 };
 
 const removeFeaturedCategories = (data: number[]): Promise<ICategory | null> => {
-  return APIClient.post<ICategory, { data: number[] }>(`/products/removeFeaturedCategories`, { data });
+  return APIClient.post<ICategory, { data: number[] }>(`/categories/removeFeaturedCategories`, { data });
 };
 
 const CategoryService = {

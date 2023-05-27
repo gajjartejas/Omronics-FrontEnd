@@ -1,22 +1,24 @@
-import { Status, Wrapper } from '@googlemaps/react-wrapper';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import '../../App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import ContactDataService from '../../services/api-service/contact-data/contact-data';
+import ContactDataService from '../../services/api-service/contact-data';
 import { IBaseContactData } from '../../services/api-service/contact-data/types';
+import useStaticDataStore from '../../store/store';
 
 function ContactUs() {
+  const staticPageData = useStaticDataStore(state => state.staticPageData);
+
   //State
   const [name, setName] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
   const [email, setEmail] = useState('');
   const [requirements, setRequirements] = useState('');
 
-  const render = (status: Status) => {
-    return <h1>{status}</h1>;
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const onClickSave = async () => {
     if (!name || name.trim().length < 1) {
@@ -73,16 +75,21 @@ function ContactUs() {
     setRequirements('');
   };
 
+  function sanitizeUrl(url: string) {
+    return url.replaceAll('&amp;', '&');
+  }
+
   return (
-    <Wrapper render={render} apiKey={''}>
+    <Box sx={{ pb: 4 }}>
       <Box sx={{ pt: 8 }}>
         <div style={{ width: '100%' }}>
           <iframe
+            loading="lazy"
             title="map"
             width="100%"
             height="300"
             scrolling="no"
-            src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Omronics%20automation,%20Kathwada-Singarva%20Road,%20Odhav%20Industrial%20Estate,%20Kathwada,%20Gujarat+(Omronics%20automation)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+            src={sanitizeUrl(staticPageData[11].data)}>
             <a href="https://www.maps.ie/distance-area-calculator.html">distance maps</a>
           </iframe>
         </div>
@@ -95,51 +102,49 @@ function ContactUs() {
                 {'HEAD QUARTER'}
               </Typography>
               <Typography sx={{ whiteSpace: 'pre-wrap', color: '#181818', fontSize: 14 }}>
-                {
-                  'Shed No-57,\nRadhekrishna Industrial Estate,\nNear Adarsh Estate Road No-5,\nKathwada GIDC Ahmedabad,\nGujarat 382430'
-                }
+                {staticPageData[2].data}
               </Typography>
 
               <Typography sx={{ color: '#181818', fontSize: 14, fontWeight: '700' }}>
                 {'Email: '}
                 <Typography component="span" display={'inline'} sx={{ color: '#181818', fontSize: 14 }}>
-                  {'omronics@hotmail.com'}
+                  {staticPageData[3].data}
                 </Typography>
               </Typography>
 
               <Typography sx={{ mt: 4, fontSize: 24, fontWeight: '500' }}>{'Get In Touch'}</Typography>
               <Typography sx={{ mt: 2, color: '#ce110d', fontSize: 20, fontWeight: '500' }}>
-                {'Chandrakant Prajapati'}
+                {staticPageData[4].data}
               </Typography>
               <Typography sx={{ color: '#181818', fontSize: 14, fontWeight: '700' }}>
                 {'Contact Details: '}
                 <Typography component={'span'} display={'inline'} sx={{ color: '#181818', fontSize: 14 }}>
-                  {'8160854963'}
+                  {staticPageData[5].data}
                 </Typography>
                 <Typography component={'span'} display={'inline'} sx={{ color: '#181818', fontSize: 14 }}>
-                  {' ,7433007733'}
+                  {`, ${staticPageData[6].data}`}
                 </Typography>
               </Typography>
               <Typography sx={{ color: '#181818', fontSize: 14, fontWeight: '700' }}>
                 {'Email: '}
                 <Typography component="span" display={'inline'} sx={{ color: '#181818', fontSize: 14 }}>
-                  {'chandrakant@omronics.com'}
+                  {staticPageData[7].data}
                 </Typography>
               </Typography>
 
               <Typography sx={{ mt: 2, color: '#ce110d', fontSize: 20, fontWeight: '500' }}>
-                {'Pranav Prajapati'}
+                {staticPageData[8].data}
               </Typography>
               <Typography sx={{ color: '#181818', fontSize: 14, fontWeight: '700' }}>
                 {'Contact Details: '}
                 <Typography component={'span'} display={'inline'} sx={{ color: '#181818', fontSize: 14 }}>
-                  {'+91 9512953737'}
+                  {staticPageData[9].data}
                 </Typography>
               </Typography>
               <Typography sx={{ color: '#181818', fontSize: 14, fontWeight: '700' }}>
                 {'Email: '}
                 <Typography component="span" display={'inline'} sx={{ color: '#181818', fontSize: 14 }}>
-                  {'pranav@omronics.com'}
+                  {staticPageData[10].data}
                 </Typography>
               </Typography>
             </Grid2>
@@ -190,7 +195,7 @@ function ContactUs() {
           </Grid2>
         </Container>
       </Box>
-    </Wrapper>
+    </Box>
   );
 }
 

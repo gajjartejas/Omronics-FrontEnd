@@ -33,6 +33,10 @@ const removeFeaturedManufacturers = (data: number[]): Promise<IManufacturer | nu
   return APIClient.post<IManufacturer, { data: number[] }>(`/manufacturers/removeFeaturedManufacturers`, { data });
 };
 
+const getProductsByManufacturerId = (id: number): Promise<IManufacturer | null> => {
+  return APIClient.get<IManufacturer>(`manufacturers/${id}/products`);
+};
+
 const ManufacturerService = {
   getManufacturers,
   getManufactureById,
@@ -41,7 +45,8 @@ const ManufacturerService = {
   deleteManufacturer,
   deleteManufacturers,
   addFeaturedManufacturers,
-  removeFeaturedManufacturers
+  removeFeaturedManufacturers,
+  getProductsByManufacturerId,
 };
 
 export default ManufacturerService;
