@@ -21,8 +21,8 @@ function Brands() {
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -49,20 +49,22 @@ function Brands() {
             <Grid container sx={{ alignItems: 'center', justifyContent: 'center', flex: 1, mt: 2 }}>
               <Grid container sx={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                 <Grid container spacing={0} sx={{}}>
-                  {brands.map((item, index) => (
-                    <Components.ProductCard
-                      key={item.id}
-                      index={index}
-                      title={item.name}
-                      description={item.description || ''}
-                      image={
-                        item.images && item.images.length > 0
-                          ? Config.Constants.MANUFACTURER_IMAGE_PATH + item.images[0].url
-                          : null
-                      }
-                      onPress={onPressCard}
-                    />
-                  ))}
+                  {brands
+                    .filter(v => v.active)
+                    .map((item, index) => (
+                      <Components.ProductCard
+                        key={item.id}
+                        index={index}
+                        title={item.name}
+                        description={item.description || ''}
+                        image={
+                          item.images && item.images.length > 0
+                            ? Config.Constants.MANUFACTURER_IMAGE_PATH + item.images[0].url
+                            : null
+                        }
+                        onPress={onPressCard}
+                      />
+                    ))}
                 </Grid>
               </Grid>
             </Grid>

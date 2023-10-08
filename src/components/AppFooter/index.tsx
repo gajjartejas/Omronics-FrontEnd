@@ -148,43 +148,48 @@ export const Footer: FC<IFooterProps> = (props: IFooterProps): ReactElement => {
             })}
           </Grid>
 
-          <Grid direction="row" alignItems="center">
-            <Typography color="white" fontWeight={'bold'} fontSize={17} marginBottom={2}>
-              {'Office'}
-            </Typography>
-            <Grid item xs={12} marginTop={1}>
-              <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
-                <pre style={{ fontFamily: 'inherit' }}>{staticPageData[16].data}</pre>
+          {staticPageData && staticPageData.length > 0 && (
+            <Grid direction="row" alignItems="center">
+              <Typography color="white" fontWeight={'bold'} fontSize={17} marginBottom={2}>
+                {'Office'}
               </Typography>
+              <Grid item xs={12} marginTop={1}>
+                <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
+                  <pre style={{ fontFamily: 'inherit' }}>{staticPageData[16].data}</pre>
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid direction="row" alignItems="center">
-            <Typography color="white" fontWeight={'bold'} fontSize={17} marginBottom={2}>
-              {'Contact US'}
-            </Typography>
-            <Grid item xs={12} marginTop={1}>
-              <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
-                {staticPageData[17].data}
+          )}
+
+          {staticPageData && staticPageData.length > 0 && (
+            <Grid direction="row" alignItems="center">
+              <Typography color="white" fontWeight={'bold'} fontSize={17} marginBottom={2}>
+                {'Contact US'}
               </Typography>
-              <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
-                {`${staticPageData[18].data} | ${staticPageData[19].data}`}
-              </Typography>
-              <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
-                {staticPageData[20].data}
-              </Typography>
+              <Grid item xs={12} marginTop={1}>
+                <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
+                  {staticPageData[17].data}
+                </Typography>
+                <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
+                  {`${staticPageData[18].data} | ${staticPageData[19].data}`}
+                </Typography>
+                <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
+                  {staticPageData[20].data}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} marginTop={1}>
+                <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
+                  {staticPageData[21].data}
+                </Typography>
+                <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
+                  {`${staticPageData[22].data}`}
+                </Typography>
+                <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
+                  {staticPageData[23].data}
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={12} marginTop={1}>
-              <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
-                {staticPageData[21].data}
-              </Typography>
-              <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
-                {`${staticPageData[22].data}`}
-              </Typography>
-              <Typography style={{ wordWrap: 'break-word' }} color="grey" fontSize={16}>
-                {staticPageData[23].data}
-              </Typography>
-            </Grid>
-          </Grid>
+          )}
         </Stack>
       </Container>
     </Box>

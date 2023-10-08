@@ -69,7 +69,7 @@ function Categories() {
 
       if (dataTree && dataTree.length < 1) {
         //Go to product page
-        // navigate(`/products?categoryId=${categoryId}`, { replace: true });
+        navigate(`/products?categoryId=${categoryId}`, { replace: true });
       } else {
         setCategories(dataTree!);
         refCategories.current = [...dataTree];

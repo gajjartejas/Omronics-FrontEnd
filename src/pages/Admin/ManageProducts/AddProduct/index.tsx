@@ -1,11 +1,8 @@
 import { Button, Container, FormControlLabel, FormGroup, Grid, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import MarkdownIt from 'markdown-it';
 import React, { useEffect, useRef } from 'react';
-import MdEditor from 'react-markdown-editor-lite';
 import Components from 'components';
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading';
-import 'react-markdown-editor-lite/lib/index.css';
 import { useFilePicker } from 'use-file-picker';
 import CategoryService from '../../../../services/api-service/category/category';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
@@ -26,6 +23,8 @@ import { IBaseConnectId } from '../../../../services/api-service/types';
 import { IBaseProductResource } from '../../../../services/api-service/product-resource/types';
 import { IBaseProduct } from '../../../../services/api-service/product/types';
 import Checkbox from '@mui/material/Checkbox';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const MAX_IMAGE_UPLOAD = 50;
 const MAX_FILE_UPLOAD = 50;
@@ -73,7 +72,6 @@ function AddProduct() {
   const refFileReplaceIndex = useRef<number | null>(null);
   const selectedManufacturerId = useRef<IBaseConnectId | null>(null);
   const selectedCategoryIds = useRef<IBaseConnectId[]>([]);
-  const mdParser = new MarkdownIt(/* Markdown-it options */);
 
   //Const
   let navigate = useNavigate();
@@ -96,6 +94,7 @@ function AddProduct() {
   const [isProductCreating, setIsProductCreating] = React.useState<boolean>(false);
   const [isFeatured, setIsFeatured] = React.useState<boolean>(false);
   const [isActive, setIsActive] = React.useState<boolean>(true);
+  const [editorLoaded, setEditorLoaded] = React.useState<boolean>(false);
 
   //Other
   const [openFileSelector, { plainFiles }] = useFilePicker({
@@ -196,7 +195,6 @@ function AddProduct() {
 
   // Finish!
   function handleEditorChange({ html, text }: any) {
-    // console.log('handleEditorChange', html, text);
     setDescription(text);
   }
 
@@ -490,9 +488,12 @@ function AddProduct() {
               label="Name"
             />
             <Typography sx={{ mt: 2, mb: 1, fontSize: 16, fontWeight: 400 }}>{'Description'}</Typography>
-            <MdEditor
-              style={{ height: '200px' }}
-              renderHTML={text => mdParser.render(text)}
+            <CKEditor
+              editor={ClassicEditor}
+              data={description}
+              onReady={() => {
+                setEditorLoaded(true);
+              }}
               onChange={handleEditorChange}
             />
 

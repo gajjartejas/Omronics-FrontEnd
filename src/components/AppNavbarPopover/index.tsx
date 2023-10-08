@@ -8,12 +8,15 @@ import AppLinkButton from '../AppLinkButton';
 import { IProduct } from '../../services/api-service/product/types';
 import { IManufacturer } from '../../services/api-service/manufacturer/types';
 import Constant from '../../config/app-constant';
+import { ICategory } from '../../services/api-service/category/types';
 
 interface Props {
   popupState: PopupState;
   featuredProducts: IProduct[];
   featuredManufacturer: IManufacturer[];
+  featuredCategories: ICategory[];
   onClickProduct: (item: IProduct, index: number) => void;
+  onClickCategory: (item: ICategory, index: number) => void;
   onClickManufacturer: (item: IManufacturer, index: number) => void;
   onClickFixtures: (item: { id: number; name: string }, index: number) => void;
   onClickViewAllProduct: () => void;
@@ -25,9 +28,9 @@ const AppNavbarPopover: React.FC<Props> = (props: Props) => {
   //Const
   const {
     popupState,
-    featuredProducts,
+    featuredCategories,
     featuredManufacturer,
-    onClickProduct,
+    onClickCategory,
     onClickManufacturer,
     onClickFixtures,
     onClickViewAllProduct,
@@ -51,10 +54,10 @@ const AppNavbarPopover: React.FC<Props> = (props: Props) => {
         <Stack sx={{ mx: 8, my: 4 }} direction="row" spacing={6}>
           <Stack sx={{}} spacing={4}>
             <Typography sx={{ marginY: 2 }} variant="h6">
-              {'Featured Products'}
+              {'Featured Categories'}
             </Typography>
-            {featuredProducts.map((v, idx) => {
-              return <AppLinkButton onClick={() => onClickProduct(v, idx)} key={v.id.toString()} title={v.name} />;
+            {featuredCategories.map((v, idx) => {
+              return <AppLinkButton onClick={() => onClickCategory(v, idx)} key={v.id.toString()} title={v.name} />;
             })}
             <AppLinkButton
               onClick={onClickViewAllProduct}

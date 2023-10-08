@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { IManufacturer } from '../../services/api-service/manufacturer/types';
 import { IProduct } from '../../services/api-service/product/types';
 import { useNavigate } from 'react-router';
+import { ICategory } from '../../services/api-service/category/types';
 
 const HomeLayout = () => {
   //Const
@@ -16,6 +17,7 @@ const HomeLayout = () => {
   const featuredProducts = useStaticDataStore(state => state.featuredProducts);
   const featuredManufacturer = useStaticDataStore(state => state.featuredManufacturer);
   const staticPageData = useStaticDataStore(state => state.staticPageData);
+  const featuredCategories = useStaticDataStore(state => state.featuredCategories);
 
   useEffect(() => {
     getData();
@@ -51,6 +53,10 @@ const HomeLayout = () => {
     window.open(`${window.location.origin}/product?id=${featuredProducts[index].id}`);
   };
 
+  const onClickCategory = (item: ICategory, index: number) => {
+    window.open(`${window.location.origin}/products?categoryId=${item.id}`);
+  };
+
   const onClickFixtures = (item: { id: number; name: string }, index: number) => {
     alert('Coming soon...');
   };
@@ -73,8 +79,10 @@ const HomeLayout = () => {
         items={Config.Constants.HOME_MENU_OPTIONS}
         featuredManufacturer={featuredManufacturer}
         featuredProducts={featuredProducts}
+        featuredCategories={featuredCategories}
         onClickManufacturer={onClickManufacturer}
         onClickProduct={onClickProduct}
+        onClickCategory={onClickCategory}
         onClickMenuButton={onClickMenuButton}
         onClickFixtures={onClickFixtures}
         onClickViewAllBrands={onClickViewAllBrands}

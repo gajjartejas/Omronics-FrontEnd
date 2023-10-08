@@ -154,8 +154,7 @@ function ProductDetail() {
               </Grid2>
               <Grid2 sx={{ ml: 0, flex: 1 }}>
                 <Typography sx={{ mt: 2, fontSize: 24, fontWeight: '500' }}>{name}</Typography>
-                <Typography sx={{ mt: 2, fontSize: 20 }}>{description || 'N/A'}</Typography>
-
+                <div dangerouslySetInnerHTML={{ __html: description }} />
                 <div style={{ display: 'flex' }}>
                   <Typography sx={{ mt: 2, fontSize: 20, fontWeight: '500', whiteSpace: 'pre-wrap' }}>
                     {'Part Number: '}

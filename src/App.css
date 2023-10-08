@@ -5,14 +5,12 @@
 .react-dropdown-tree-select .dropdown {
   margin-top: 16px;
   width: 100%;
-  padding: 0px;
+  padding: 0;
 }
 
 .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow {
   width: 100%;
-  padding: 0px;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding: 6px 0;
 }
 
 .mdl-demo body {
@@ -30,7 +28,7 @@
 }
 
 .mdl-demo .material-icons {
-  font-family: 'Material Icons';
+  font-family: 'Material Icons', serif;
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -45,7 +43,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* mdl-demo is a custom classname to increases the specificity of our styles. It can be anything. 
+/* mdl-demo is a custom classname to increases the specificity of our styles. It can be anything.
  * The idea is that it is easy to extend/override builtin styles with very little effort.
  */
 
@@ -105,4 +103,24 @@
 
 .ck-editor__editable {
   min-height: 500px;
+}
+
+td {
+  border: 1px solid #292b2f;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+th {
+  padding: 12px;
+  text-align: left;
+  background-color: #2196f3;
+  color: white;
 }

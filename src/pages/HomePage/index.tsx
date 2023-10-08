@@ -153,16 +153,20 @@ function HomePage() {
             itemClass="carousel-item-padding-40-px"
             partialVisbile
             responsive={responsive}>
-            {featuredManufacturer.map((item, index) => (
-              <Components.ProductCard
-                key={index.toString()}
-                index={index}
-                title={item.name}
-                description={item.description || ''}
-                image={item.images && item.images.length > 0 ? Config.Constants.IMAGE_PATH + item.images[0].url : null}
-                onPress={onPressBrand}
-              />
-            ))}
+            {featuredManufacturer
+              .filter(v => v.active)
+              .map((item, index) => (
+                <Components.ProductCard
+                  key={index.toString()}
+                  index={index}
+                  title={item.name}
+                  description={item.description || ''}
+                  image={
+                    item.images && item.images.length > 0 ? Config.Constants.IMAGE_PATH + item.images[0].url : null
+                  }
+                  onPress={onPressBrand}
+                />
+              ))}
           </Carousel1>
           <Button onClick={onPressAllBrand} sx={{ mt: 2, mb: 2, px: 4, py: 2 }} variant="contained">
             {'VIEW ALL'}
@@ -184,16 +188,20 @@ function HomePage() {
             itemClass="carousel-item-padding-40-px"
             partialVisbile
             responsive={responsive}>
-            {featuredProducts.map((item, index) => (
-              <Components.ProductCard
-                key={index.toString()}
-                index={index}
-                title={item.name}
-                description={item.description || ''}
-                image={item.images && item.images.length > 0 ? Config.Constants.IMAGE_PATH + item.images[0].url : null}
-                onPress={onPressProduct}
-              />
-            ))}
+            {featuredProducts
+              .filter(v => v.active)
+              .map((item, index) => (
+                <Components.ProductCard
+                  key={index.toString()}
+                  index={index}
+                  title={item.name}
+                  description={item.description || ''}
+                  image={
+                    item.images && item.images.length > 0 ? Config.Constants.IMAGE_PATH + item.images[0].url : null
+                  }
+                  onPress={onPressProduct}
+                />
+              ))}
           </Carousel1>
           <Button onClick={onPressAllProduct} sx={{ mt: 2, mb: 2, px: 4, py: 2 }} variant="contained">
             {'VIEW ALL'}
@@ -215,16 +223,20 @@ function HomePage() {
             itemClass="carousel-item-padding-40-px"
             partialVisbile
             responsive={responsive}>
-            {featuredCategories.map((item, index) => (
-              <Components.ProductCard
-                key={index.toString()}
-                index={index}
-                title={item.name}
-                description={item.description || ''}
-                image={item.images && item.images.length > 0 ? Config.Constants.IMAGE_PATH + item.images[0].url : null}
-                onPress={onPressCategory}
-              />
-            ))}
+            {featuredCategories
+              .filter(v => v.active)
+              .map((item, index) => (
+                <Components.ProductCard
+                  key={index.toString()}
+                  index={index}
+                  title={item.name}
+                  description={item.description || ''}
+                  image={
+                    item.images && item.images.length > 0 ? Config.Constants.IMAGE_PATH + item.images[0].url : null
+                  }
+                  onPress={onPressCategory}
+                />
+              ))}
           </Carousel1>
           <Button onClick={onPressAllCategory} sx={{ mt: 2, mb: 2, px: 4, py: 2 }} variant="contained">
             {'VIEW ALL'}

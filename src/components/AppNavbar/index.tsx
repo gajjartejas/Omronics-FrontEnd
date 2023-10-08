@@ -23,13 +23,16 @@ import AppNavbarPopover from '../AppNavbarPopover';
 import Config from '../../config';
 import { IProduct } from '../../services/api-service/product/types';
 import { IManufacturer } from '../../services/api-service/manufacturer/types';
+import { ICategory } from '../../services/api-service/category/types';
 
 interface AppNavbarProps {
   items: { id: number; name: string }[];
   window?: () => Window;
   featuredProducts: IProduct[];
   featuredManufacturer: IManufacturer[];
+  featuredCategories: ICategory[];
   onClickProduct: (item: IProduct, index: number) => void;
+  onClickCategory: (item: ICategory, index: number) => void;
   onClickManufacturer: (item: IManufacturer, index: number) => void;
   onClickMenuButton: (item: { id: number; name: string }, index: number) => void;
   onClickFixtures: (item: { id: number; name: string }, index: number) => void;
@@ -46,7 +49,9 @@ const AppNavbar: React.FC<AppNavbarProps> = (props: AppNavbarProps) => {
     items,
     featuredProducts,
     featuredManufacturer,
+    featuredCategories,
     onClickProduct,
+    onClickCategory,
     onClickManufacturer,
     onClickMenuButton,
     onClickFixtures,
@@ -115,10 +120,12 @@ const AppNavbar: React.FC<AppNavbarProps> = (props: AppNavbarProps) => {
           </Stack>
           <AppNavbarPopover
             popupState={popupState}
-            featuredManufacturer={featuredManufacturer}
-            featuredProducts={featuredProducts}
+            featuredManufacturer={featuredManufacturer.filter(v => v.active)}
+            featuredProducts={featuredProducts.filter(v => v.active)}
+            featuredCategories={featuredCategories.filter(v => v.active)}
             onClickManufacturer={onClickManufacturer}
             onClickProduct={onClickProduct}
+            onClickCategory={onClickCategory}
             onClickFixtures={onClickFixtures}
             onClickViewAllBrands={onClickViewAllBrands}
             onClickViewAllFixtures={onClickViewAllFixtures}
