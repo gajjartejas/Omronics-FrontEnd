@@ -5,11 +5,14 @@ import AppAdminDrawer from 'components/AppAdminDrawer';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 import * as React from 'react';
 import { useOutlet } from 'react-router-dom';
+import useUserDataStore from 'store/user-data-store';
+import SignIn from '../../pages/Admin/AdminLogin/SignIn';
 
 function AuthLayout() {
   //Const
   const { height } = useWindowDimensions();
   const outlet = useOutlet();
+  const token = useUserDataStore(store => store.token);
 
   //State
   const [open, setOpen] = React.useState(true);
@@ -17,6 +20,10 @@ function AuthLayout() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  if (!token) {
+    return <SignIn />;
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>

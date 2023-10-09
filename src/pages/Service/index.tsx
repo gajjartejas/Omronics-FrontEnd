@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import '../../App.css';
 
-import useStaticDataStore from '../../store/store';
+import useStaticDataStore from '../../store/static-data-store';
 import React, { useEffect } from 'react';
 
 function Service() {

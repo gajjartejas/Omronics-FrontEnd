@@ -2,7 +2,7 @@ import { useOutlet } from 'react-router-dom';
 import Config from '../../config';
 import AppNavbar from '../AppNavbar';
 import AppFooter from '../AppFooter';
-import useStaticDataStore from '../../store/store';
+import useStaticDataStore from '../../store/static-data-store';
 import { useEffect } from 'react';
 import { IManufacturer } from '../../services/api-service/manufacturer/types';
 import { IProduct } from '../../services/api-service/product/types';

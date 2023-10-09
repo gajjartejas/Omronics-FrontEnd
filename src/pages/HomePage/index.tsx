@@ -7,7 +7,7 @@ import Image from 'mui-image';
 import Config from '../../config';
 import Carousel1 from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import useStaticDataStore from '../../store/store';
+import useStaticDataStore from '../../store/static-data-store';
 let Carousel = require('react-responsive-carousel').Carousel;
 
 function HomePage() {

@@ -10,6 +10,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import { styled } from '@mui/material/styles';
 import Constant from 'config/app-constant';
 import { useNavigate } from 'react-router-dom';
+import useUserDataStore from '../../store/user-data-store';
 
 interface Props {
   open?: boolean;
@@ -46,10 +47,14 @@ const AppAdminDrawer: React.FC<Props> = (props: Props) => {
   //Const
   const { open, toggleDrawer } = props;
   const navigate = useNavigate();
+  const clear = useUserDataStore(store => store.clear);
 
   //State
 
   function onPressItem(c: { id: number; title: string; route?: string }, i: number, j: number): void {
+    if (c.route === '/admin/login') {
+      clear();
+    }
     c.route && navigate(c.route);
   }
 

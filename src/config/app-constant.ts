@@ -119,6 +119,7 @@ const Constant = {
         {
           id: 0,
           title: 'Logout',
+          route: '/admin/login',
           icon: 'power_off',
         },
       ],

@@ -270,7 +270,6 @@ function UpdateProduct() {
   // Finish!
   function handleEditorChange(event: any, editor: any) {
     const html = editor.getData();
-    console.log('html', html);
     if (html !== undefined) {
       setDescription(html);
     }

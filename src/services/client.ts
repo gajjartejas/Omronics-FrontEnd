@@ -10,8 +10,10 @@ export const appApiClient = axios.create({
 
   headers: {
     'content-type': 'application/json',
+    'Access-Control-Allow-Credentials': true,
   },
   timeout: 60000,
+  withCredentials: true,
 });
 
 interface IAPIBase {}

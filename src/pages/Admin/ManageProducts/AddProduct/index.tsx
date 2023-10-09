@@ -194,8 +194,11 @@ function AddProduct() {
   }, [plainFiles]);
 
   // Finish!
-  function handleEditorChange({ html, text }: any) {
-    setDescription(text);
+  function handleEditorChange(event: any, editor: any) {
+    const html = editor.getData();
+    if (html !== undefined) {
+      setDescription(html);
+    }
   }
 
   const onChangeImage = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {

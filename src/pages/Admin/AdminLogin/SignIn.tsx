@@ -12,13 +12,18 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import UserService from '../../../services/api-service/user';
+import { IUserCredentials } from '../../../services/api-service/user/types';
+import useUserDataStore from '../../../store/user-data-store';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://omronics.com/">
+        {'Omronics'}
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -29,13 +34,28 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const setData = useUserDataStore(store => store.setData);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const jsonData = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+    try {
+      let response = await UserService.loginUser(jsonData as unknown as IUserCredentials);
+      console.log('Response', response);
+      if (response && response.token) {
+        setData(response);
+        navigate(`/admin/dashboard`);
+      } else if (response) {
+        toast.error(response.message);
+      }
+    } catch (e: any) {
+      toast.error(e.message);
+    }
   };
 
   return (

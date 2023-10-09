@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ContactDataService from '../../services/api-service/contact-data';
 import { IBaseContactData } from '../../services/api-service/contact-data/types';
-import useStaticDataStore from '../../store/store';
+import useStaticDataStore from '../../store/static-data-store';
 
 function ContactUs() {
   const staticPageData = useStaticDataStore(state => state.staticPageData);
